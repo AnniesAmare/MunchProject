@@ -1,10 +1,20 @@
 #MunchProject CHANGELOG
+#November 7th 
+Cloned the README.md file from the DigitalMunch project into the MunchProject project. 
+Changes has been made to the file to acocunt for the change of technologies we use.
+(We´ve moved to using an express server, socket.io and the Visual Studio Code alongside IntelliJ).
+
+Cloned the CHANGELOG.md file from the DigitalMunch project into the MunchProject project.
+Changed to tha project has been inserted into this file from November 2nd to November 7th.
 #November 5th 
 Restarted the project under the banner of MunchProject. 
 
 This has been done to quicken up the workflow, 
 and to better work to the strength of the personal.
 The grander perspective, and scope, og the project remains unchanged. 
+
+#November 2nd
+AT changes.
 #DigitalMunch CHANGELOG
 #October 20th 2021
 README.md file added to repository
@@ -25,7 +35,8 @@ IsCursed attribute added
 Fixed spelling mistakes inside code
 
 #October 10th 2021
-((All classes seperated into separate files and change class names to easier reflect their purpose, and highten readablity))
+((All classes seperated into separate files and change class names to easier reflect their purpose, 
+and highten readablity))
 
 Changed inside "((...))"" reverted due to program not running
 
