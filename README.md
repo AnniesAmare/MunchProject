@@ -18,6 +18,8 @@ Phaser.io (phaser version 3.55.2)
 
 IntelliJ IDE
 
+Visual Studio Code 
+
 #Features
 Treasure Cards
 
