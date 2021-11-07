@@ -1,16 +1,63 @@
 class Card {
   constructor(scene) {
-    this.render = (x, y) => {
-        let cardBack = scene.add.rectangle(0, 0, 120, 150, 0x9966ff);
-        let cardText = scene.add.text(0,0, 'A card');
-        let card = scene.add.container(x,y,[ cardBack, cardText ])
-        card.setSize(cardBack.width, cardBack.height);
-        card.setInteractive();
-        scene.input.setDraggable(card);
-        return card;
+    this.render = (x, y, textT, textD) => {
+      //sets the width and height for a card
+      let widthR = 120;
+      let heightR = 150;
+      //defines the max boundary for text in the card
+      let textWrap = {fontSize: 10, wordWrap: {width: widthR - (widthR/16)}};
+      //adds the cardShape
+      let cardBack = scene.add.rectangle(0, 0, widthR, heightR, 0x9966ff);
+      //sets start x and y starting-point for text
+      let textX = cardBack.x - (widthR/2.3);
+      let textY = cardBack.y - (heightR/2);
+      //adds text-pieces
+      let text1 = scene.add.text(textX, textY, 'Type: '+ textT, textWrap);
+      let text2 = scene.add.text(textX, textY + 10, 'Description: ' + textD, textWrap)
+      //gathers all card-elements in a collected container
+      let card = scene.add.container(x, y, [cardBack, text1, text2]);
+      card.setSize(cardBack.width, cardBack.height);
+      card.setInteractive();
+      scene.input.setDraggable(card);
+
+      return card;
     }
-  } 
+  }
 }
+
+class Door extends Card {
+  constructor(scene, type, description) {
+    super(scene);
+    this.type = type;
+    this.description = description;
+
+  }
+
+  use(){
+    //initiates door-card
+    //Checks if card is a monster card, this method should return a value that signifies that combat is entered
+  }
+
+}
+class Monster extends Door{
+  constructor(scene, type, description, level, treasureNumber) {
+    super(scene, type, description);
+    this.level = level;
+    this.treasureNumber = treasureNumber;
+  }
+
+  getLevel(){
+    return this.level;
+  }
+
+  getTreasureNumber(){
+    return this.treasureNumber;
+  }
+
+}
+
+
+
 var config = {
   type: Phaser.AUTO,
   parent: 'phaser-example',
@@ -117,8 +164,10 @@ function create() {
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = () => {
     for (let i = 0; i < 4; i++) {
-      let playerCard = new Card(this);
-      playerCard.render(100 + (i * 200), 440,);
+      //let playerCard = new Card(this);
+      let Monster1 = new Monster(self, "Demon", "This is Lucifer. Boo-hoo you're screwed", 21, 4);
+      //playerCard.render(100 + (i * 200), 440,);
+      Monster1.render(100 + (i*200), 440, Monster1.type, Monster1.description);
     }
   }
 
