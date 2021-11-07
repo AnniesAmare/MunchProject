@@ -73,6 +73,32 @@ class Curse extends Door {
   }
 }
 
+class Treasure extends Card{
+  constructor(scene, value,levelBonus,description) {
+    super(scene);
+    this.value = value;
+    this.levelBonus = levelBonus;
+    this.description = description;
+  }
+  sell(){
+    //Adds a method that sells the item, and adds a level if the combined value
+    // of sold items is bigger than 1000
+  };
+  use(){
+    //Applies the item-bonus to the character
+    //Checks if it is a usable-once item and if so, it removes the item effect at the end of the turn
+  }
+}
+
+class Equipment extends Treasure {
+  constructor(scene, value,levelBonus,description,type,size) {
+    super(scene, value,levelBonus,description);
+    this.type = type;
+    this.size = size;
+  }
+}
+
+
 
 
 var config = {
