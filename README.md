@@ -20,7 +20,7 @@ IntelliJ IDE (Full version)
 
 Visual Studio Code 
 
-Express (express version 4.17.1)
+Express/node server.js (express version 4.17.1)
 
 Socket.io (socket.io version 4.3.1)
 
