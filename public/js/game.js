@@ -1,6 +1,6 @@
 class Card {
   constructor(scene) {
-    this.render = (x, y, textT, textD) => {
+    this.render = (x, y, textD) => {
       //sets the width and height for a card
       let widthR = 120;
       let heightR = 150;
@@ -12,10 +12,10 @@ class Card {
       let textX = cardBack.x - (widthR/2.3);
       let textY = cardBack.y - (heightR/2);
       //adds text-pieces
-      let text1 = scene.add.text(textX, textY, 'Type: '+ textT, textWrap);
+      //let text1 = scene.add.text(textX, textY, 'Type: '+ textT, textWrap);
       let text2 = scene.add.text(textX, textY + 10, 'Description: ' + textD, textWrap)
       //gathers all card-elements in a collected container
-      let card = scene.add.container(x, y, [cardBack, text1, text2]);
+      let card = scene.add.container(x, y, [cardBack, text2]);
 
       card.setSize(cardBack.width, cardBack.height);
       card.setInteractive();
@@ -213,12 +213,23 @@ function create() {
 
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = () => {
-    for (let i = 0; i < 4; i++) {
-      //let playerCard = new Card(this);
-      let Monster1 = new Monster(self, "Demon", "This is Lucifer. Boo-hoo you're screwed", 21, 4);
-      //playerCard.render(100 + (i * 200), 440,);
-      Monster1.render(100 + (i*200), 440, Monster1.type, Monster1.description);
-    }
+    let Monster1 = new Monster(self, "Demon", "This is Lucifer. Boo-hoo you're screwed", 21, 4);
+    let Curse1 = new Curse(self, "Permanent till removed", "If someone played this then they want to make your" +
+        "life miserable game-wise", "The dreaded situation of AT interfering during your round. Monster lvl +14")
+    let Equipment1 = new Equipment(self, 200, 4, "This is a short sword made by Merlin himself. " +
+        "You may only wield it if you are a Super Munchkin",
+        "Short Sword", "small - meaning that it isn't a big item")
+    let Item1 = new Item(self, 300, 1, "For a small sacrifice you gain strength from this magic lamp!",
+        "If you sacrifice a 100 gold you add a lvlBonus to your short sword (If you have one)", false)
+    var cardDeck = {Monster1, Curse1, Equipment1, Item1};
+
+    console.log(cardDeck);
+
+    Monster1.render(100, 440, Monster1.description);
+    Curse1.render(100 + 200, 440, Curse1.description);
+    Equipment1.render(100 + 400 , 440, Equipment1.description);
+    Item1.render(100 + 600, 440, Item1.description);
+
   }
 
   //Defines a function that is run when the mouse is pressed (pointerdown) on the dealCardsText-grapic.
