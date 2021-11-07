@@ -98,6 +98,13 @@ class Equipment extends Treasure {
   }
 }
 
+class Item extends Treasure {
+  constructor(scene, value,levelBonus,description,effect,usableOnce) {
+    super(scene, value,levelBonus,description);
+    this.effect = effect;
+    this.useableOnce = usableOnce;
+  }
+}
 
 
 
