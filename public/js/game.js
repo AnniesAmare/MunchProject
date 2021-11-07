@@ -16,6 +16,7 @@ class Card {
       let text2 = scene.add.text(textX, textY + 10, 'Description: ' + textD, textWrap)
       //gathers all card-elements in a collected container
       let card = scene.add.container(x, y, [cardBack, text1, text2]);
+
       card.setSize(cardBack.width, cardBack.height);
       card.setInteractive();
       scene.input.setDraggable(card);
@@ -54,6 +55,22 @@ class Monster extends Door{
     return this.treasureNumber;
   }
 
+}
+
+class Curse extends Door {
+  constructor(scene, type, description, effect) {
+    super(scene, type, description);
+    this.effect = effect;
+  }
+
+
+  addCurse(){
+    //Applies curse effect to character, monster, treasure or item
+  }
+
+  removeCurse(){
+    //removes curse effect from character, monster, treasure or item
+  }
 }
 
 
