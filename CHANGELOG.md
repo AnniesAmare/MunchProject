@@ -14,7 +14,7 @@ and to better work to the strength of the personal.
 The grander perspective, and scope, og the project remains unchanged. 
 
 #November 2nd
-AT changes.
+AT changes
 #DigitalMunch CHANGELOG
 #October 20th 2021
 README.md file added to repository
