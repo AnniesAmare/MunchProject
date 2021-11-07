@@ -16,9 +16,13 @@ Local host: MAMP PRO (for mac) and XAMMP (for windows)
 
 Phaser.io (phaser version 3.55.2)
 
-IntelliJ IDE
+IntelliJ IDE (Full version)
 
 Visual Studio Code 
+
+Express (express version 4.17.1)
+
+Socket.io (socket.io version 4.3.1)
 
 #Features
 Treasure Cards
