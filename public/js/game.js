@@ -1,16 +1,123 @@
+
 class Card {
-  constructor(scene) {
-    this.render = (x, y) => {
-        let cardBack = scene.add.rectangle(0, 0, 120, 150, 0x9966ff);
-        let cardText = scene.add.text(0,0, 'A card');
-        let card = scene.add.container(x,y,[ cardBack, cardText ])
-        card.setSize(cardBack.width, cardBack.height);
-        card.setInteractive();
-        scene.input.setDraggable(card);
-        return card;
+  constructor(scene, cardType, description) {
+    this.cardType = cardType;
+    this.description = description;
+
+    this.render = (x, y, text) => {
+      //replaces all * with line-breaks
+      const search = '*';
+      const replaceWith = '\n\n';
+      const textWithLineBreaks = text.split(search).join(replaceWith);
+
+      //sets the width and height for a card
+      let widthR = 120;
+      let heightR = 150;
+      //defines the max boundary for text in the card
+      let textWrap = {fontSize: 9, wordWrap: {width: widthR - (widthR/16)}};
+      //adds the cardShape
+      let cardBack = scene.add.rectangle(0, 0, widthR, heightR, 0x9966ff);
+      //sets start x and y starting-point for text
+      let textX = cardBack.x - (widthR/2.3);
+      let textY = cardBack.y - (heightR/2);
+      //adds text-pieces
+      let cardText = scene.add.text(textX, textY, textWithLineBreaks, textWrap);
+      //gathers all card-elements in a collected container
+      let card = scene.add.container(x, y, [cardBack, cardText]);
+
+      card.setSize(cardBack.width, cardBack.height);
+      card.setInteractive();
+      scene.input.setDraggable(card);
+
+      return card;
     }
-  } 
+  }
 }
+
+
+class Door extends Card {
+  constructor(scene, cardType, description) {
+    super(scene, cardType, description)
+  }
+
+  use(){
+    //initiates door-card
+    //Checks if card is a monster card, this method should return a value that signifies that combat is entered
+  }
+
+}
+
+class Monster extends Door{
+  constructor(scene, cardType, description, type, level, treasureNumber) {
+    super(scene,cardType, description);
+    this.type = type;
+    this.level = level;
+    this.treasureNumber = treasureNumber;
+  }
+
+  getLevel(){
+    return this.level;
+  }
+
+  getTreasureNumber(){
+    return this.treasureNumber;
+  }
+
+}
+
+class Curse extends Door {
+  constructor(scene, cardType, description, effect) {
+    super(scene, cardType, description);
+    this.effect = effect;
+  }
+
+
+  addCurse(){
+    //Applies curse effect to character, monster, treasure or item
+  }
+
+  removeCurse(){
+    //removes curse effect from character, monster, treasure or item
+  }
+}
+
+class Treasure extends Card{
+  constructor(scene, cardType, description, value,levelBonus) {
+    super(scene, cardType, description);
+    this.value = value;
+    this.levelBonus = levelBonus;
+
+  }
+
+  sell(){
+    //Adds a method that sells the item, and adds a level if the combined value
+    // of sold items is bigger than 1000
+  };
+
+  use(){
+    //Applies the item-bonus to the character
+    //Checks if it is a usable-once item and if so, it removes the item effect at the end of the turn
+  }
+}
+
+class Equipment extends Treasure {
+  constructor(scene, cardType, type, description, value,levelBonus, size) {
+    super(scene, cardType, description, value,levelBonus,description);
+    this.type = type;
+    this.size = size;
+  }
+}
+
+class Item extends Treasure {
+  constructor(scene, cardType, description, value,levelBonus, effect,usableOnce) {
+    super(scene, cardType, description, value,levelBonus,description);
+    this.effect = effect;
+    this.useableOnce = usableOnce;
+  }
+}
+
+
+
 var config = {
   type: Phaser.AUTO,
   parent: 'phaser-example',
@@ -114,12 +221,34 @@ function create() {
   //Makes a "Deal Cards" text Graphic and sets it to be interactive.
   this.dealCardsText = this.add.text(75, 70, 'DEAL CARDS', textStyle).setInteractive();
 
+
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = () => {
+    let Monster1 = new Monster(self, "DoorCard: Monster", "Description: This is Lucifer. Boo-hoo you're screwed",
+        "Demon",21, 4);
+    let Curse1 = new Curse(self, "DoorCard: Curse", "Description: If someone played this then they want to make your" +
+        "life miserable game-wise", "Effect: The dreaded situation of AT interfering during your round. Monster lvl +14")
+    let Equipment1 = new Equipment(self, "TreasureCard: Equipment",
+        "Short Sword", "Description: This is a short sword made by Merlin himself. You may only wield it if you are a Super Munchkin",
+        200, 4, "small - meaning that it isn't a big item")
+    let Item1 = new Item(self,"TreasureCard: Item" ,
+        "Description: For a small sacrifice you gain strength from this magic lamp!", 300, 1,
+        "If you sacrifice a 100 gold you add a lvlBonus to your short sword (If you have one)", false)
+    const cardDeck = {Monster1, Curse1, Equipment1, Item1};
+
+    //card-rendering tests
+    Monster1.render(100, 440, Monster1.cardType + "*Type:" + Monster1.type + "*" + Monster1.description);
+    Curse1.render(100 + 200, 440, Curse1.cardType + "*" + Curse1.description + "*" + Curse1.effect);
+    Equipment1.render(100 + 400 , 440, Equipment1.cardType + "*" + Equipment1.description);
+    Item1.render(100 + 600, 440, Item1.cardType + "*" + Item1.description + "*Value: " + Item1.value +
+    ", Level Bonus: " + Item1.levelBonus);
+
+    /*
     for (let i = 0; i < 4; i++) {
-      let playerCard = new Card(this);
-      playerCard.render(100 + (i * 200), 440,);
+      Equipment1.render(100 + (i * 200), 440, Equipment1.type + "*" + Equipment1.description);
     }
+     */
+
   }
 
   //Defines a function that is run when the mouse is pressed (pointerdown) on the dealCardsText-grapic.
