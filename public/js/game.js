@@ -213,7 +213,7 @@ function create() {
   this.dealCardsText = this.add.text(75, 70, 'DEAL CARDS', textStyle).setInteractive();
 
   //render cards
-  this.render = (x, y, textD) => {
+  this.render = (x, y, textT, textD) => {
     //sets the width and height for a card
     let widthR = 120;
     let heightR = 150;
@@ -225,10 +225,10 @@ function create() {
     let textX = cardBack.x - (widthR/2.3);
     let textY = cardBack.y - (heightR/2);
     //adds text-pieces
-    //let text1 = scene.add.text(textX, textY, 'Type: '+ textT, textWrap);
+    let text1 = self.add.text(textX, textY, 'Type: '+ textT, textWrap);
     let text2 = self.add.text(textX, textY + 10, 'Description: ' + textD, textWrap)
     //gathers all card-elements in a collected container
-    let card = self.add.container(x, y, [cardBack, text2]);
+    let card = self.add.container(x, y, [cardBack, text1, text2]);
 
     card.setSize(cardBack.width, cardBack.height);
     card.setInteractive();
@@ -239,13 +239,15 @@ function create() {
 
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = () => {
-    let Monster1 = new Monster(self, "Demon", "This is Lucifer. Boo-hoo you're screwed", 21, 4);
-    let Curse1 = new Curse(self, "Permanent till removed", "If someone played this then they want to make your" +
+    let Monster1 = new Monster(self, "DoorCard: Monster", "This is Lucifer. Boo-hoo you're screwed",
+        21, 4);
+    let Curse1 = new Curse(self, "DoorCard: Curse", "If someone played this then they want to make your" +
         "life miserable game-wise", "The dreaded situation of AT interfering during your round. Monster lvl +14")
-    let Equipment1 = new Equipment(self, 200, 4, "This is a short sword made by Merlin himself. " +
-        "You may only wield it if you are a Super Munchkin",
-        "Short Sword", "small - meaning that it isn't a big item")
-    let Item1 = new Item(self, 300, 1, "For a small sacrifice you gain strength from this magic lamp!",
+    let Equipment1 = new Equipment(self, "TreasureCard: Equipment",
+        "This is a short sword made by Merlin himself. You may only wield it if you are a Super Munchkin",
+        200, 4,"Short Sword", "small - meaning that it isn't a big item")
+    let Item1 = new Item(self,"TreasureCard: Item" ,
+        "For a small sacrifice you gain strength from this magic lamp!", 300, 1,
         "If you sacrifice a 100 gold you add a lvlBonus to your short sword (If you have one)", false)
     const cardDeck = {Monster1, Curse1, Equipment1, Item1};
 
@@ -266,7 +268,7 @@ function create() {
 
     //console.log(cardDeck);
     for (let i = 0; i < 4; i++) {
-        self.render(100 + (i * 200), 440, cardDeckObj["description"]);
+        self.render(100 + (i * 200), 440, MonsterObj1["description"]);
     }
 
 
