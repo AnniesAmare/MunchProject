@@ -14,7 +14,18 @@ and to better work to the strength of the personal.
 The grander perspective, and scope, og the project remains unchanged. 
 
 #November 2nd
-AT changes
+Created server.js file which host the actions of the server within the program.
+This includes the express server url and the location of the local host (8081).
+
+Server set to handle connections via socket.io, and log and displays whenever a player connects.
+
+Server gives players a unique player name, based on the 4th character in their socket.io ID.
+
+Server logs and displays player disconnects.
+
+Server can now deal card to all players, and display when it is done. 
+
+Server can now add a point to a player whenever the player uses a card.
 #DigitalMunch CHANGELOG
 #October 20th 2021
 README.md file added to repository
