@@ -1,22 +1,29 @@
-/*
+
 class Card {
-  constructor(scene) {
-    this.render = (x, y, textD) => {
+  constructor(scene, cardType, description) {
+    this.cardType = cardType;
+    this.description = description;
+
+    this.render = (x, y, text) => {
+      //replaces all * with line-breaks
+      const search = '*';
+      const replaceWith = '\n\n';
+      const textWithLineBreaks = text.split(search).join(replaceWith);
+
       //sets the width and height for a card
       let widthR = 120;
       let heightR = 150;
       //defines the max boundary for text in the card
-      let textWrap = {fontSize: 10, wordWrap: {width: widthR - (widthR/16)}};
+      let textWrap = {fontSize: 9, wordWrap: {width: widthR - (widthR/16)}};
       //adds the cardShape
       let cardBack = scene.add.rectangle(0, 0, widthR, heightR, 0x9966ff);
       //sets start x and y starting-point for text
       let textX = cardBack.x - (widthR/2.3);
       let textY = cardBack.y - (heightR/2);
       //adds text-pieces
-      //let text1 = scene.add.text(textX, textY, 'Type: '+ textT, textWrap);
-      let text2 = scene.add.text(textX, textY + 10, 'Description: ' + textD, textWrap)
+      let cardText = scene.add.text(textX, textY, textWithLineBreaks, textWrap);
       //gathers all card-elements in a collected container
-      let card = scene.add.container(x, y, [cardBack, text2]);
+      let card = scene.add.container(x, y, [cardBack, cardText]);
 
       card.setSize(cardBack.width, cardBack.height);
       card.setInteractive();
@@ -26,13 +33,11 @@ class Card {
     }
   }
 }
- */
 
-class Door {
-  constructor(scene, type, description) {
-    this.type = type;
-    this.description = description;
 
+class Door extends Card {
+  constructor(scene, cardType, description) {
+    super(scene, cardType, description)
   }
 
   use(){
@@ -41,9 +46,11 @@ class Door {
   }
 
 }
+
 class Monster extends Door{
-  constructor(scene, type, description, level, treasureNumber) {
-    super(scene, type, description);
+  constructor(scene, cardType, description, type, level, treasureNumber) {
+    super(scene,cardType, description);
+    this.type = type;
     this.level = level;
     this.treasureNumber = treasureNumber;
   }
@@ -59,8 +66,8 @@ class Monster extends Door{
 }
 
 class Curse extends Door {
-  constructor(scene, type, description, effect) {
-    super(scene, type, description);
+  constructor(scene, cardType, description, effect) {
+    super(scene, cardType, description);
     this.effect = effect;
   }
 
@@ -74,18 +81,19 @@ class Curse extends Door {
   }
 }
 
-class Treasure{
-  constructor(scene, type, description, value,levelBonus) {
-    this.type = type;
-    this.description = description;
+class Treasure extends Card{
+  constructor(scene, cardType, description, value,levelBonus) {
+    super(scene, cardType, description);
     this.value = value;
     this.levelBonus = levelBonus;
 
   }
+
   sell(){
     //Adds a method that sells the item, and adds a level if the combined value
     // of sold items is bigger than 1000
   };
+
   use(){
     //Applies the item-bonus to the character
     //Checks if it is a usable-once item and if so, it removes the item effect at the end of the turn
@@ -93,15 +101,16 @@ class Treasure{
 }
 
 class Equipment extends Treasure {
-  constructor(scene, type, description, value,levelBonus, size) {
-    super(scene, type, description, value,levelBonus,description);
+  constructor(scene, cardType, type, description, value,levelBonus, size) {
+    super(scene, cardType, description, value,levelBonus,description);
+    this.type = type;
     this.size = size;
   }
 }
 
 class Item extends Treasure {
-  constructor(scene, type, description, value,levelBonus, effect,usableOnce) {
-    super(scene, type, description, value,levelBonus,description);
+  constructor(scene, cardType, description, value,levelBonus, effect,usableOnce) {
+    super(scene, cardType, description, value,levelBonus,description);
     this.effect = effect;
     this.useableOnce = usableOnce;
   }
@@ -213,6 +222,7 @@ function create() {
   this.dealCardsText = this.add.text(75, 70, 'DEAL CARDS', textStyle).setInteractive();
 
   //render cards
+  /*
   this.render = (x, y, textT, textD) => {
     //sets the width and height for a card
     let widthR = 120;
@@ -225,8 +235,8 @@ function create() {
     let textX = cardBack.x - (widthR/2.3);
     let textY = cardBack.y - (heightR/2);
     //adds text-pieces
-    let text1 = self.add.text(textX, textY, 'Type: '+ textT, textWrap);
-    let text2 = self.add.text(textX, textY + 10, 'Description: ' + textD, textWrap)
+    let text1 = self.add.text(textX, textY, textT, textWrap);
+    let text2 = self.add.text(textX, textY + 15, 'Description: ' + textD, textWrap)
     //gathers all card-elements in a collected container
     let card = self.add.container(x, y, [cardBack, text1, text2]);
 
@@ -237,19 +247,42 @@ function create() {
     return card;
   }
 
+   */
+
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = () => {
-    let Monster1 = new Monster(self, "DoorCard: Monster", "This is Lucifer. Boo-hoo you're screwed",
-        21, 4);
-    let Curse1 = new Curse(self, "DoorCard: Curse", "If someone played this then they want to make your" +
-        "life miserable game-wise", "The dreaded situation of AT interfering during your round. Monster lvl +14")
+    let Monster1 = new Monster(self, "DoorCard: Monster", "Description: This is Lucifer. Boo-hoo you're screwed",
+        "Demon",21, 4);
+    let Curse1 = new Curse(self, "DoorCard: Curse", "Description: If someone played this then they want to make your" +
+        "life miserable game-wise", "Effect: The dreaded situation of AT interfering during your round. Monster lvl +14")
     let Equipment1 = new Equipment(self, "TreasureCard: Equipment",
-        "This is a short sword made by Merlin himself. You may only wield it if you are a Super Munchkin",
-        200, 4,"Short Sword", "small - meaning that it isn't a big item")
+        "Short Sword", "Description: This is a short sword made by Merlin himself. You may only wield it if you are a Super Munchkin",
+        200, 4, "small - meaning that it isn't a big item")
     let Item1 = new Item(self,"TreasureCard: Item" ,
-        "For a small sacrifice you gain strength from this magic lamp!", 300, 1,
+        "Description: For a small sacrifice you gain strength from this magic lamp!", 300, 1,
         "If you sacrifice a 100 gold you add a lvlBonus to your short sword (If you have one)", false)
     const cardDeck = {Monster1, Curse1, Equipment1, Item1};
+
+    Monster1.render(100, 440, Monster1.cardType + "*Type:" + Monster1.type + "*" + Monster1.description);
+    Curse1.render(100 + 200, 440, Curse1.cardType + "*" + Curse1.description + "*" + Curse1.effect);
+    Equipment1.render(100 + 400 , 440, Equipment1.cardType + "*" + Equipment1.description);
+    Item1.render(100 + 600, 440, Item1.cardType + "*" + Item1.description + "*Value: " + Item1.value +
+    ", Level Bonus: " + Item1.levelBonus);
+
+    /*
+    for (let i = 0; i < 4; i++) {
+      Equipment1.render(100 + (i * 200), 440, Equipment1.type + "*" + Equipment1.description);
+    }
+
+     */
+
+
+
+
+    /*
+    let her = Object.getOwnPropertyNames(Monster.prototype);
+
+    console.log(her);
 
     //converts class-objects to objects
     const {...MonsterObj1} = Monster1;
@@ -266,20 +299,24 @@ function create() {
     console.log(cardDeckO);
 
 
+    /*
+
     //console.log(cardDeck);
     for (let i = 0; i < 4; i++) {
-        self.render(100 + (i * 200), 440, MonsterObj1["description"]);
+
+      self.render(100 + (i * 200), 440, MonsterObj1["type"], MonsterObj1["description"]);
     }
 
+     */
 
 
     /*
-    Object.keys(cardDeck).forEach(function(des, i , cardDeck){
-      console.log(cardDeck["description"])
-      self.render(100 + (i * 200), 440, cardDeck[i]["description"]);
+    Object.keys(doorDeck).forEach(function(des, i , cardDeck){
+      self.render(100 + (i * 200), 440, des.getType(), des.getDescription());
     });
 
-     */
+    */
+
 
 
 
