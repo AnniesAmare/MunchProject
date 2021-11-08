@@ -221,33 +221,6 @@ function create() {
   //Makes a "Deal Cards" text Graphic and sets it to be interactive.
   this.dealCardsText = this.add.text(75, 70, 'DEAL CARDS', textStyle).setInteractive();
 
-  //render cards
-  /*
-  this.render = (x, y, textT, textD) => {
-    //sets the width and height for a card
-    let widthR = 120;
-    let heightR = 150;
-    //defines the max boundary for text in the card
-    let textWrap = {fontSize: 10, wordWrap: {width: widthR - (widthR/16)}};
-    //adds the cardShape
-    let cardBack = self.add.rectangle(0, 0, widthR, heightR, 0x9966ff);
-    //sets start x and y starting-point for text
-    let textX = cardBack.x - (widthR/2.3);
-    let textY = cardBack.y - (heightR/2);
-    //adds text-pieces
-    let text1 = self.add.text(textX, textY, textT, textWrap);
-    let text2 = self.add.text(textX, textY + 15, 'Description: ' + textD, textWrap)
-    //gathers all card-elements in a collected container
-    let card = self.add.container(x, y, [cardBack, text1, text2]);
-
-    card.setSize(cardBack.width, cardBack.height);
-    card.setInteractive();
-    self.input.setDraggable(card);
-
-    return card;
-  }
-
-   */
 
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = () => {
@@ -263,6 +236,7 @@ function create() {
         "If you sacrifice a 100 gold you add a lvlBonus to your short sword (If you have one)", false)
     const cardDeck = {Monster1, Curse1, Equipment1, Item1};
 
+    //card-rendering tests
     Monster1.render(100, 440, Monster1.cardType + "*Type:" + Monster1.type + "*" + Monster1.description);
     Curse1.render(100 + 200, 440, Curse1.cardType + "*" + Curse1.description + "*" + Curse1.effect);
     Equipment1.render(100 + 400 , 440, Equipment1.cardType + "*" + Equipment1.description);
@@ -273,59 +247,6 @@ function create() {
     for (let i = 0; i < 4; i++) {
       Equipment1.render(100 + (i * 200), 440, Equipment1.type + "*" + Equipment1.description);
     }
-
-     */
-
-
-
-
-    /*
-    let her = Object.getOwnPropertyNames(Monster.prototype);
-
-    console.log(her);
-
-    //converts class-objects to objects
-    const {...MonsterObj1} = Monster1;
-    const {...CurseObj1} = Curse1;
-    const {...EquipmentObj1} = Equipment1;
-    const {...ItemObj1} = Item1;
-
-    const cardDeckObj = {MonsterObj1, CurseObj1, EquipmentObj1, ItemObj1};
-
-    const {...cardDeckO} = cardDeck;
-
-    console.log(cardDeck);
-    console.log(cardDeckObj);
-    console.log(cardDeckO);
-
-
-    /*
-
-    //console.log(cardDeck);
-    for (let i = 0; i < 4; i++) {
-
-      self.render(100 + (i * 200), 440, MonsterObj1["type"], MonsterObj1["description"]);
-    }
-
-     */
-
-
-    /*
-    Object.keys(doorDeck).forEach(function(des, i , cardDeck){
-      self.render(100 + (i * 200), 440, des.getType(), des.getDescription());
-    });
-
-    */
-
-
-
-
-    /*
-    this.render(100, 440, Monster1.description);
-    this.render(100 + 200, 440, Curse1.description);
-    this.render(100 + 400 , 440, Equipment1.description);
-    this.render(100 + 600, 440, Item1.description);
-
      */
 
   }
