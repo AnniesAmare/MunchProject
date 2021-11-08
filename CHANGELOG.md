@@ -26,6 +26,30 @@ Server logs and displays player disconnects.
 Server can now deal card to all players, and display when it is done. 
 
 Server can now add a point to a player whenever the player uses a card.
+
+Created a game.js file which hosts the classes, functions and most functionalities of the game. 
+
+Creaded a Card class. 
+This host data about the cards functions and attributes. 
+An example is the cards size, and that is can contain a card text.
+
+Created a canvas on which the gamme is played.
+This includes a desired size of the canvas.
+
+A textstyle variable has been created to handle everything related to fonts and sizes. 
+
+A Create function has been added which creates a group with can contain informarion about all other players.
+
+A function which displays player information has been added and runs all the time in the background.
+This function also displays the player info in different places on the screen, 
+according to how many players are connected.
+This functionality also removes player info from disconnected players. 
+
+A button has been make with the deal card action. 
+
+Displayed card has been made dragable, 
+and when dragged upwards it rewards a point to the player.
+
 #DigitalMunch CHANGELOG
 #October 20th 2021
 README.md file added to repository
