@@ -175,3 +175,14 @@ function addOtherPlayersText(self, playerInfo) {
   otherPlayerText.playerId = playerInfo.playerId;
   self.otherPlayersInfoText.add(otherPlayerText);
 }
+//---------------------------------------------Unit testing------------------------------------------//
+/*
+NOTE: to not get any errors remember to install this in your terminal:
+"npm install --save-dev jest"
+
+NOTE: To test something, type this in your terminal:
+"npm test"
+ */
+
+//function exports for UnitTests
+//module.exports = addPlayerText;
