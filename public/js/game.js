@@ -1,3 +1,4 @@
+/*
 class Card {
   constructor(scene) {
     this.render = (x, y, textD) => {
@@ -25,10 +26,10 @@ class Card {
     }
   }
 }
+ */
 
-class Door extends Card {
+class Door {
   constructor(scene, type, description) {
-    super(scene);
     this.type = type;
     this.description = description;
 
@@ -73,12 +74,13 @@ class Curse extends Door {
   }
 }
 
-class Treasure extends Card{
-  constructor(scene, value,levelBonus,description) {
-    super(scene);
+class Treasure{
+  constructor(scene, type, description, value,levelBonus) {
+    this.type = type;
+    this.description = description;
     this.value = value;
     this.levelBonus = levelBonus;
-    this.description = description;
+
   }
   sell(){
     //Adds a method that sells the item, and adds a level if the combined value
@@ -91,16 +93,15 @@ class Treasure extends Card{
 }
 
 class Equipment extends Treasure {
-  constructor(scene, value,levelBonus,description,type,size) {
-    super(scene, value,levelBonus,description);
-    this.type = type;
+  constructor(scene, type, description, value,levelBonus, size) {
+    super(scene, type, description, value,levelBonus,description);
     this.size = size;
   }
 }
 
 class Item extends Treasure {
-  constructor(scene, value,levelBonus,description,effect,usableOnce) {
-    super(scene, value,levelBonus,description);
+  constructor(scene, type, description, value,levelBonus, effect,usableOnce) {
+    super(scene, type, description, value,levelBonus,description);
     this.effect = effect;
     this.useableOnce = usableOnce;
   }
@@ -211,6 +212,31 @@ function create() {
   //Makes a "Deal Cards" text Graphic and sets it to be interactive.
   this.dealCardsText = this.add.text(75, 70, 'DEAL CARDS', textStyle).setInteractive();
 
+  //render cards
+  this.render = (x, y, textD) => {
+    //sets the width and height for a card
+    let widthR = 120;
+    let heightR = 150;
+    //defines the max boundary for text in the card
+    let textWrap = {fontSize: 10, wordWrap: {width: widthR - (widthR/16)}};
+    //adds the cardShape
+    let cardBack = self.add.rectangle(0, 0, widthR, heightR, 0x9966ff);
+    //sets start x and y starting-point for text
+    let textX = cardBack.x - (widthR/2.3);
+    let textY = cardBack.y - (heightR/2);
+    //adds text-pieces
+    //let text1 = scene.add.text(textX, textY, 'Type: '+ textT, textWrap);
+    let text2 = self.add.text(textX, textY + 10, 'Description: ' + textD, textWrap)
+    //gathers all card-elements in a collected container
+    let card = self.add.container(x, y, [cardBack, text2]);
+
+    card.setSize(cardBack.width, cardBack.height);
+    card.setInteractive();
+    self.input.setDraggable(card);
+
+    return card;
+  }
+
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = () => {
     let Monster1 = new Monster(self, "Demon", "This is Lucifer. Boo-hoo you're screwed", 21, 4);
@@ -221,14 +247,47 @@ function create() {
         "Short Sword", "small - meaning that it isn't a big item")
     let Item1 = new Item(self, 300, 1, "For a small sacrifice you gain strength from this magic lamp!",
         "If you sacrifice a 100 gold you add a lvlBonus to your short sword (If you have one)", false)
-    var cardDeck = {Monster1, Curse1, Equipment1, Item1};
+    const cardDeck = {Monster1, Curse1, Equipment1, Item1};
+
+    //converts class-objects to objects
+    const {...MonsterObj1} = Monster1;
+    const {...CurseObj1} = Curse1;
+    const {...EquipmentObj1} = Equipment1;
+    const {...ItemObj1} = Item1;
+
+    const cardDeckObj = {MonsterObj1, CurseObj1, EquipmentObj1, ItemObj1};
+
+    const {...cardDeckO} = cardDeck;
 
     console.log(cardDeck);
+    console.log(cardDeckObj);
+    console.log(cardDeckO);
 
-    Monster1.render(100, 440, Monster1.description);
-    Curse1.render(100 + 200, 440, Curse1.description);
-    Equipment1.render(100 + 400 , 440, Equipment1.description);
-    Item1.render(100 + 600, 440, Item1.description);
+
+    //console.log(cardDeck);
+    for (let i = 0; i < 4; i++) {
+        self.render(100 + (i * 200), 440, cardDeckObj["description"]);
+    }
+
+
+
+    /*
+    Object.keys(cardDeck).forEach(function(des, i , cardDeck){
+      console.log(cardDeck["description"])
+      self.render(100 + (i * 200), 440, cardDeck[i]["description"]);
+    });
+
+     */
+
+
+
+    /*
+    this.render(100, 440, Monster1.description);
+    this.render(100 + 200, 440, Curse1.description);
+    this.render(100 + 400 , 440, Equipment1.description);
+    this.render(100 + 600, 440, Item1.description);
+
+     */
 
   }
 
