@@ -49,7 +49,6 @@ A button has been make with the deal card action.
 
 Displayed card has been made dragable, 
 and when dragged upwards it rewards a point to the player.
-
 #DigitalMunch CHANGELOG
 #October 20th 2021
 README.md file added to repository
