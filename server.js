@@ -30,7 +30,7 @@ io.on('connection', function (socket) {
     y: 50,
     character: {
       race: "Human",
-      combatClass: "Nothing",
+      combatClass: "Classless",
       level: 0,
       levelBonus: 0,
     },

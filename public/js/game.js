@@ -251,7 +251,9 @@ function addPlayerText(self, playerInfo) {
 
 //Adds another players infoText grahic and adds this grapic to the group.
 function addOtherPlayersText(self, playerInfo) {
-  const otherPlayerText = self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
+  const playerText = self.add.text(0, 0, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
+  const characterText = self.add.text(0,25, playerInfo.character.race).setOrigin(0.5, 0.5);
+  const otherPlayerText = self.add.container(playerInfo.x, playerInfo.y, [playerText, characterText]);
   otherPlayerText.playerId = playerInfo.playerId;
   self.otherPlayersInfoText.add(otherPlayerText);
 }
