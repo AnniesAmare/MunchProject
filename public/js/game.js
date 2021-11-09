@@ -1,16 +1,85 @@
 class Card {
   constructor(scene) {
     this.render = (x, y) => {
-      let cardBack = scene.add.rectangle(0, 0, 120, 150, 0x9966ff);
-      let cardText = scene.add.text(0,0, 'A card');
-      let card = scene.add.container(x,y,[ cardBack, cardText ])
-      card.setSize(cardBack.width, cardBack.height);
-      card.setInteractive();
-      scene.input.setDraggable(card);
-      return card;
+        let cardBack = scene.add.rectangle(0, 0, 120, 150, 0x9966ff);
+        let cardText = scene.add.text(0,0, 'A card');
+        let card = scene.add.container(x,y,[ cardBack, cardText ])
+        card.setSize(cardBack.width, cardBack.height);
+        card.setInteractive();
+        scene.input.setDraggable(card);
+        return card;
     }
+  } 
+}
+
+class Card2 extends Phaser.GameObjects.Container {
+  constructor(scene, socket, x, y) {
+    super(scene);
+
+    this.scene = scene;
+    this.x = x;
+    this.y = y;
+
+    let cardBack = this.scene.add.rectangle(0, 0, 120, 150, 0x9966ff).setInteractive();
+    let cardText = this.scene.add.text(0,0, 'A card');
+    this.add(cardBack);
+    this.add(cardText)
+
+    cardBack.on('pointerdown', () => {
+      this.addRandomPoints(socket);
+    });
+    this.scene.add.existing(this);
+  }
+
+  addRandomPoints(socket){
+    let points = Math.floor(Math.random() * 3)+1;
+    console.log("Adding "+points+" points to player");
+    socket.emit('addPoint', socket.id, points);
+    this.destroy();
   }
 }
+
+class Card3 extends Phaser.GameObjects.Container {
+  constructor(scene, socket, x, y) {
+    super(scene);
+
+    this.scene = scene;
+    this.x = x;
+    this.y = y;
+
+    let cardBack = this.scene.add.rectangle(0, 0, 120, 150, 0x9966ff).setInteractive();
+    let cardText = this.scene.add.text(0,0, 'A card');
+    this.add(cardBack);
+    this.add(cardText)
+
+    this.addPoints = function(points){
+      cardBack.on('pointerdown', () => {
+        console.log("Adding "+points+" points to player");
+        socket.emit('addPoint', socket.id, points);
+        this.destroy();
+      });
+    }
+
+    this.minusPoints = function(points){
+      cardBack.on('pointerdown', () => {
+        console.log("Adding "+-points+" points to player");
+        socket.emit('addPoint', socket.id, -points);
+        this.destroy();
+      });
+    }
+
+    this.scene.add.existing(this);
+  }
+
+  addRandomPoints(socket){
+    let points = Math.floor(Math.random() * 3)+1;
+    console.log("Adding "+points+" points to player");
+    socket.emit('addPoint', socket.id, points);
+    this.destroy();
+  }
+}
+
+
 
 var config = {
   type: Phaser.AUTO,
@@ -55,7 +124,7 @@ function create() {
         addPlayerText(self, players[id]);
       } else {
         count=count+1;
-        players[id].x = 180*count;
+        players[id].x = 200*count;
         addOtherPlayersText(self,players[id]);
       }
     });
@@ -68,7 +137,7 @@ function create() {
     let count =1;
     self.otherPlayersInfoText.getChildren().forEach(function (otherPlayerText) {
       count=count+1;
-      otherPlayerText.x = 180*count;
+      otherPlayerText.x = 200*count;
     });
   });
 
@@ -90,7 +159,7 @@ function create() {
         addPlayerText(self, players[id]);
       } else {
         count=count+1;
-        players[id].x = 180*count;
+        players[id].x = 200*count;
         addOtherPlayersText(self,players[id]);
       }
     });
@@ -107,7 +176,7 @@ function create() {
         otherPlayerText.destroy();
       } else {
         count=count+1;
-        otherPlayerText.x = 180*count;
+        otherPlayerText.x = 200*count;
       }
     }
   });
@@ -117,9 +186,16 @@ function create() {
 
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = () => {
-    for (let i = 0; i < 4; i++) {
-      let playerCard = new Card(this);
-      playerCard.render(100 + (i * 200), 440,);
+    for (let i = 0; i < 5; i++) {
+      let playercard = new Card3(this, self.socket, 100 + (i * 180), 440);
+      if (i>2) {
+        playercard.minusPoints(3);
+      } else {
+        playercard.addPoints(5);
+      }
+
+      // let playerCard = new Card3(this, self.socket);
+      // playerCard.render(100 + (i * 200), 440);
     }
   }
 
@@ -175,14 +251,3 @@ function addOtherPlayersText(self, playerInfo) {
   otherPlayerText.playerId = playerInfo.playerId;
   self.otherPlayersInfoText.add(otherPlayerText);
 }
-//---------------------------------------------Unit testing------------------------------------------//
-/*
-NOTE: to not get any errors remember to install this in your terminal:
-"npm install --save-dev jest"
-
-NOTE: To test something, type this in your terminal:
-"npm test"
- */
-
-//function exports for UnitTests
-//module.exports = addPlayerText;
