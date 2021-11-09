@@ -8,17 +8,17 @@ var players = {}; //the object array used to
 
 //defines the locations of the relevant files
 app.use(express.static(__dirname + '/public'));
-app.get('/', (req, res) => {
+app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
 //selects the port for the localhost-server.
-server.listen(8081, () => {
+server.listen(8081, function () {
   console.log('listening on *:8081');
 });
 
 //happens when theres a socket connection to the server.
-io.on('connection', (socket) => {
+io.on('connection', function (socket) {
   console.log('a user with id: ' + socket.id + ', connected'); //logs the connected user.
 
   //we create a new player and add it to our players object-array using the socket.id as an index key.
@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
   socket.broadcast.emit('newPlayer', players[socket.id]);  // send the new player-object to all other players
 
   //happens when the socket disconnects again
-  socket.on('disconnect', () => {
+  socket.on('disconnect', function () {
     console.log('user with id: ' + socket.id + ', disconnected');
     delete players[socket.id]; //deletes the player-object for the disconnected player
     socket.broadcast.emit('disconnectPlayer', socket.id); //send the disconnected player's id to all other players

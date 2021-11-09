@@ -1,6 +1,6 @@
 class Card {
   constructor(scene) {
-    this.render = (x, y) => {
+    this.render = function (x, y) {
       let cardBack = scene.add.rectangle(0, 0, 120, 150, 0x9966ff);
       let cardText = scene.add.text(0, 0, 'A card');
       let card = scene.add.container(x, y, [cardBack, cardText])
@@ -25,7 +25,7 @@ class Card2 extends Phaser.GameObjects.Container {
     this.add(cardBack);
     this.add(cardText)
 
-    cardBack.on('pointerdown', () => {
+    cardBack.on('pointerdown', function () {
       this.addRandomPoints(socket);
     });
     this.scene.add.existing(this);
@@ -53,7 +53,7 @@ class Card3 extends Phaser.GameObjects.Container {
     this.add(cardText)
 
     this.addPoints = function (points) {
-      cardBack.on('pointerdown', () => {
+      cardBack.on('pointerdown', function () {
         console.log("Adding " + points + " points to player");
         socket.emit('addPoint', socket.id, points);
         this.destroy();
@@ -61,7 +61,7 @@ class Card3 extends Phaser.GameObjects.Container {
     }
 
     this.minusPoints = function (points) {
-      cardBack.on('pointerdown', () => {
+      cardBack.on('pointerdown', function () {
         console.log("Adding " + -points + " points to player");
         socket.emit('addPoint', socket.id, -points);
         this.destroy();
@@ -185,7 +185,7 @@ function create() {
   this.dealCardsText = this.add.text(75, 70, 'DEAL CARDS', textStyle).setInteractive();
 
   //Defines a function to create and render the cards objects using the Card-class
-  this.dealCards = () => {
+  this.dealCards = function () {
     for (let i = 0; i < 5; i++) {
       let playercard = new Card3(this, self.socket, 100 + (i * 180), 440);
       if (i > 2) {
@@ -238,7 +238,7 @@ function create() {
 
 }
 
-function update() { }
+function update() {}
 
 //Adds a playerInfoText graphic using a player-object recieved from the server
 function addPlayerText(self, playerInfo) {
