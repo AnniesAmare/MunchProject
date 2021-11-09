@@ -12,34 +12,7 @@ class Card {
   }
 }
 
-class Card2 extends Phaser.GameObjects.Container {
-  constructor(scene, socket, x, y) {
-    super(scene);
-
-    this.scene = scene;
-    this.x = x;
-    this.y = y;
-
-    let cardBack = this.scene.add.rectangle(0, 0, 120, 150, 0x9966ff).setInteractive();
-    let cardText = this.scene.add.text(0, 0, 'A card');
-    this.add(cardBack);
-    this.add(cardText)
-
-    cardBack.on('pointerdown', function () {
-      this.addRandomPoints(socket);
-    });
-    this.scene.add.existing(this);
-  }
-
-  addRandomPoints(socket) {
-    let points = Math.floor(Math.random() * 3) + 1;
-    console.log("Adding " + points + " points to player");
-    socket.emit('addPoint', socket.id, points);
-    this.destroy();
-  }
-}
-
-class Card3 extends Phaser.GameObjects.Container {
+class TreasureCard extends Phaser.GameObjects.Container {
   constructor(scene, socket, x, y) {
     super(scene);
     let self = this;
@@ -52,7 +25,16 @@ class Card3 extends Phaser.GameObjects.Container {
     this.y = y;
 
     this.add(cardBack);
-    this.add(cardText)
+    this.add(cardText);
+
+    this.levelUpCard = function (numberOfLevels) {
+      cardBack.setFillStyle(0x3D85C6);
+      cardBack.on('pointerdown', function () {
+        console.log("Adding " + numberOfLevels + " points to player");
+        socket.emit('addPoint', socket.id, numberOfLevels);
+        self.destroy();
+      });
+    }
 
     this.addPoints = function (points) {
       cardBack.on('pointerdown', function () {
@@ -69,15 +51,7 @@ class Card3 extends Phaser.GameObjects.Container {
         self.destroy();
       });
     }
-
     this.scene.add.existing(this);
-  }
-
-  addRandomPoints(socket) {
-    let points = Math.floor(Math.random() * 3) + 1;
-    console.log("Adding " + points + " points to player");
-    socket.emit('addPoint', socket.id, points);
-    this.destroy();
   }
 }
 
@@ -184,19 +158,19 @@ function create() {
   });
 
   //Makes a "Deal Cards" text Graphic and sets it to be interactive.
-  this.dealCardsText = this.add.text(config.width/2, config.height/2, 'DEAL CARDS', textStyle).setInteractive().setOrigin(0.5, 0.5);
+  this.dealCardsText = this.add.text(config.width / 2, config.height / 2, 'DEAL CARDS', textStyle).setInteractive().setOrigin(0.5, 0.5);
 
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = function () {
     for (let i = 0; i < 5; i++) {
-      let playercard = new Card3(this, self.socket, 100 + (i * 180), 440);
+      let playercard = new TreasureCard(this, self.socket, 100 + (i * 180), 440);
       if (i > 2) {
-        playercard.minusPoints(3);
+        playercard.levelUpCard(3);
       } else {
         playercard.addPoints(5);
       }
 
-      // let playerCard = new Card3(this, self.socket);
+      // let playerCard = new TreasureCard(this, self.socket);
       // playerCard.render(100 + (i * 200), 440);
     }
   }
@@ -240,21 +214,21 @@ function create() {
 
 }
 
-function update() {}
+function update() { }
 
 //Adds a playerInfoText graphic using a player-object recieved from the server
 function addPlayerText(self, playerInfo) {
-  const playerText = self.add.text(0,0, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
-  const character = playerInfo.character.combatClass+" - "+playerInfo.character.race+"\nLevel(+ bonus): "+playerInfo.character.level;
-  const characterText = self.add.text(0,25, character).setOrigin(0.5, 0.5);
-  self.playerInfoText = self.add.container(playerInfo.x,playerInfo.y,[playerText,characterText]);
+  const playerText = self.add.text(0, 0, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
+  const character = playerInfo.character.combatClass + " - " + playerInfo.character.race + "\nLevel(+ bonus): " + playerInfo.character.level;
+  const characterText = self.add.text(0, 25, character).setOrigin(0.5, 0.5);
+  self.playerInfoText = self.add.container(playerInfo.x, playerInfo.y, [playerText, characterText]);
 }
 
 //Adds another players infoText grahic and adds this grapic to the group.
 function addOtherPlayersText(self, playerInfo) {
   const playerText = self.add.text(0, 0, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
-  const character = playerInfo.character.combatClass+" - "+playerInfo.character.race+"\nLevel(+ bonus): "+playerInfo.character.level;
-  const characterText = self.add.text(0,25, character).setOrigin(0.5, 0.5);
+  const character = playerInfo.character.combatClass + " - " + playerInfo.character.race + "\nLevel(+ bonus): " + playerInfo.character.level;
+  const characterText = self.add.text(0, 25, character).setOrigin(0.5, 0.5);
   const otherPlayerText = self.add.container(playerInfo.x, playerInfo.y, [playerText, characterText]);
   otherPlayerText.playerId = playerInfo.playerId;
   self.otherPlayersInfoText.add(otherPlayerText);
