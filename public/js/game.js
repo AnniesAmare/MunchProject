@@ -42,16 +42,17 @@ class Card2 extends Phaser.GameObjects.Container {
 class Card3 extends Phaser.GameObjects.Container {
   constructor(scene, socket, x, y) {
     super(scene);
+    let self = this;
+
+    let cardBack = this.scene.add.rectangle(0, 0, 120, 150, 0x9966ff).setInteractive();
+    let cardText = this.scene.add.text(0, 0, 'A card');
 
     this.scene = scene;
     this.x = x;
     this.y = y;
 
-    let cardBack = this.scene.add.rectangle(0, 0, 120, 150, 0x9966ff).setInteractive();
-    let cardText = this.scene.add.text(0, 0, 'A card');
-    let self = this;
-    self.add(cardBack);
-    self.add(cardText)
+    this.add(cardBack);
+    this.add(cardText)
 
     this.addPoints = function (points) {
       cardBack.on('pointerdown', function () {
@@ -243,7 +244,9 @@ function update() { }
 
 //Adds a playerInfoText graphic using a player-object recieved from the server
 function addPlayerText(self, playerInfo) {
-  self.playerInfoText = self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
+  const playerText = self.add.text(0,0, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
+  const characterText = self.add.text(0,25, playerInfo.character.race).setOrigin(0.5, 0.5);
+  self.playerInfoText = self.add.container(playerInfo.x,playerInfo.y,[playerText,characterText]);
 }
 
 //Adds another players infoText grahic and adds this grapic to the group.
