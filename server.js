@@ -55,6 +55,7 @@ io.on('connection', function (socket) {
   socket.on('addPoint', function (playerId, points) {
     console.log("Adding " + points + " points to player: " + playerId);
     players[playerId].points = players[playerId].points + points; //updates the playerdata to add the point.
+    players[playerId].character.level = players[playerId].points; //updates the characterdata to add the levels
     socket.emit('update', players); //sends this message back to the sender
     socket.broadcast.emit('update', players); //sends this message to all others.
   });

@@ -240,19 +240,21 @@ function create() {
 
 }
 
-function update() { }
+function update() {}
 
 //Adds a playerInfoText graphic using a player-object recieved from the server
 function addPlayerText(self, playerInfo) {
   const playerText = self.add.text(0,0, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
-  const characterText = self.add.text(0,25, playerInfo.character.race).setOrigin(0.5, 0.5);
+  const character = playerInfo.character.combatClass+" - "+playerInfo.character.race+"\nLevel(+ bonus): "+playerInfo.character.level;
+  const characterText = self.add.text(0,25, character).setOrigin(0.5, 0.5);
   self.playerInfoText = self.add.container(playerInfo.x,playerInfo.y,[playerText,characterText]);
 }
 
 //Adds another players infoText grahic and adds this grapic to the group.
 function addOtherPlayersText(self, playerInfo) {
   const playerText = self.add.text(0, 0, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
-  const characterText = self.add.text(0,25, playerInfo.character.race).setOrigin(0.5, 0.5);
+  const character = playerInfo.character.combatClass+" - "+playerInfo.character.race+"\nLevel(+ bonus): "+playerInfo.character.level;
+  const characterText = self.add.text(0,25, character).setOrigin(0.5, 0.5);
   const otherPlayerText = self.add.container(playerInfo.x, playerInfo.y, [playerText, characterText]);
   otherPlayerText.playerId = playerInfo.playerId;
   self.otherPlayersInfoText.add(otherPlayerText);
