@@ -1,15 +1,15 @@
 class Card {
   constructor(scene) {
     this.render = (x, y) => {
-        let cardBack = scene.add.rectangle(0, 0, 120, 150, 0x9966ff);
-        let cardText = scene.add.text(0,0, 'A card');
-        let card = scene.add.container(x,y,[ cardBack, cardText ])
-        card.setSize(cardBack.width, cardBack.height);
-        card.setInteractive();
-        scene.input.setDraggable(card);
-        return card;
+      let cardBack = scene.add.rectangle(0, 0, 120, 150, 0x9966ff);
+      let cardText = scene.add.text(0, 0, 'A card');
+      let card = scene.add.container(x, y, [cardBack, cardText])
+      card.setSize(cardBack.width, cardBack.height);
+      card.setInteractive();
+      scene.input.setDraggable(card);
+      return card;
     }
-  } 
+  }
 }
 
 class Card2 extends Phaser.GameObjects.Container {
@@ -21,7 +21,7 @@ class Card2 extends Phaser.GameObjects.Container {
     this.y = y;
 
     let cardBack = this.scene.add.rectangle(0, 0, 120, 150, 0x9966ff).setInteractive();
-    let cardText = this.scene.add.text(0,0, 'A card');
+    let cardText = this.scene.add.text(0, 0, 'A card');
     this.add(cardBack);
     this.add(cardText)
 
@@ -31,9 +31,9 @@ class Card2 extends Phaser.GameObjects.Container {
     this.scene.add.existing(this);
   }
 
-  addRandomPoints(socket){
-    let points = Math.floor(Math.random() * 3)+1;
-    console.log("Adding "+points+" points to player");
+  addRandomPoints(socket) {
+    let points = Math.floor(Math.random() * 3) + 1;
+    console.log("Adding " + points + " points to player");
     socket.emit('addPoint', socket.id, points);
     this.destroy();
   }
@@ -48,21 +48,21 @@ class Card3 extends Phaser.GameObjects.Container {
     this.y = y;
 
     let cardBack = this.scene.add.rectangle(0, 0, 120, 150, 0x9966ff).setInteractive();
-    let cardText = this.scene.add.text(0,0, 'A card');
+    let cardText = this.scene.add.text(0, 0, 'A card');
     this.add(cardBack);
     this.add(cardText)
 
-    this.addPoints = function(points){
+    this.addPoints = function (points) {
       cardBack.on('pointerdown', () => {
-        console.log("Adding "+points+" points to player");
+        console.log("Adding " + points + " points to player");
         socket.emit('addPoint', socket.id, points);
         this.destroy();
       });
     }
 
-    this.minusPoints = function(points){
+    this.minusPoints = function (points) {
       cardBack.on('pointerdown', () => {
-        console.log("Adding "+-points+" points to player");
+        console.log("Adding " + -points + " points to player");
         socket.emit('addPoint', socket.id, -points);
         this.destroy();
       });
@@ -71,9 +71,9 @@ class Card3 extends Phaser.GameObjects.Container {
     this.scene.add.existing(this);
   }
 
-  addRandomPoints(socket){
-    let points = Math.floor(Math.random() * 3)+1;
-    console.log("Adding "+points+" points to player");
+  addRandomPoints(socket) {
+    let points = Math.floor(Math.random() * 3) + 1;
+    console.log("Adding " + points + " points to player");
     socket.emit('addPoint', socket.id, points);
     this.destroy();
   }
@@ -97,7 +97,7 @@ var config = {
     preload: preload,
     create: create,
     update: update
-  } 
+  }
 };
 var textStyle = {
   font: "normal 18px Trebuchet MS",
@@ -117,15 +117,15 @@ function create() {
   // Input: an array of players indexed with socket.id.
   // Output: text graphics for all players.
   this.socket.on('currentPlayers', function (players) {
-    let count =1;
+    let count = 1;
     //keys = socket.id's = an id for every player
     Object.keys(players).forEach(function (id) {
       if (players[id].playerId === self.socket.id) {
         addPlayerText(self, players[id]);
       } else {
-        count=count+1;
-        players[id].x = 200*count;
-        addOtherPlayersText(self,players[id]);
+        count = count + 1;
+        players[id].x = 200 * count;
+        addOtherPlayersText(self, players[id]);
       }
     });
   });
@@ -134,10 +134,10 @@ function create() {
   //Output: adds a text grapic for the new player and rearanges all other players
   this.socket.on('newPlayer', function (player) {
     addOtherPlayersText(self, player);
-    let count =1;
+    let count = 1;
     self.otherPlayersInfoText.getChildren().forEach(function (otherPlayerText) {
-      count=count+1;
-      otherPlayerText.x = 200*count;
+      count = count + 1;
+      otherPlayerText.x = 200 * count;
     });
   });
 
@@ -148,19 +148,19 @@ function create() {
     self.playerInfoText.destroy();
     //Removes the text-graphics for other players info.
     const allOtherPlayersText = self.otherPlayersInfoText.getChildren();
-    for (let index = allOtherPlayersText.length-1; index >= 0 ; index--) {
+    for (let index = allOtherPlayersText.length - 1; index >= 0; index--) {
       const otherPlayerText = allOtherPlayersText[index];
       otherPlayerText.destroy();
     }
     //Makes the new objects and spaces them out
-    let count =1;
+    let count = 1;
     Object.keys(players).forEach(function (id) {
       if (players[id].playerId === self.socket.id) {
         addPlayerText(self, players[id]);
       } else {
-        count=count+1;
-        players[id].x = 200*count;
-        addOtherPlayersText(self,players[id]);
+        count = count + 1;
+        players[id].x = 200 * count;
+        addOtherPlayersText(self, players[id]);
       }
     });
   });
@@ -168,15 +168,15 @@ function create() {
   //Input: the disconnected players socket.id.
   //Output: removes the disconnected player's info text-graphic and reorders all the others.
   this.socket.on('disconnectPlayer', function (playerId) {
-    let count =1;
+    let count = 1;
     const allOtherPlayersText = self.otherPlayersInfoText.getChildren();
-    for (let index = allOtherPlayersText.length-1; index >= 0 ; index--) {
+    for (let index = allOtherPlayersText.length - 1; index >= 0; index--) {
       const otherPlayerText = allOtherPlayersText[index];
       if (playerId === otherPlayerText.playerId) {
         otherPlayerText.destroy();
       } else {
-        count=count+1;
-        otherPlayerText.x = 200*count;
+        count = count + 1;
+        otherPlayerText.x = 200 * count;
       }
     }
   });
@@ -188,7 +188,7 @@ function create() {
   this.dealCards = () => {
     for (let i = 0; i < 5; i++) {
       let playercard = new Card3(this, self.socket, 100 + (i * 180), 440);
-      if (i>2) {
+      if (i > 2) {
         playercard.minusPoints(3);
       } else {
         playercard.addPoints(5);
@@ -215,11 +215,11 @@ function create() {
 
   //Hover effect
   this.dealCardsText.on('pointerover', function () {
-      self.dealCardsText.setColor('#ff69b4');
+    self.dealCardsText.setColor('#ff69b4');
   })
 
   this.dealCardsText.on('pointerout', function () {
-      self.dealCardsText.setColor('#00ffff');
+    self.dealCardsText.setColor('#00ffff');
   })
 
   //Dictates logic for dragging a game-object
@@ -238,16 +238,16 @@ function create() {
 
 }
 
-function update() {}
+function update() { }
 
 //Adds a playerInfoText graphic using a player-object recieved from the server
 function addPlayerText(self, playerInfo) {
-  self.playerInfoText = self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName+" Points:"+playerInfo.points).setOrigin(0.5, 0.5);
+  self.playerInfoText = self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
 }
 
 //Adds another players infoText grahic and adds this grapic to the group.
 function addOtherPlayersText(self, playerInfo) {
-  const otherPlayerText = self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName+" Points:"+playerInfo.points).setOrigin(0.5, 0.5);
+  const otherPlayerText = self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
   otherPlayerText.playerId = playerInfo.playerId;
   self.otherPlayersInfoText.add(otherPlayerText);
 }

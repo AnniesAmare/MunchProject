@@ -19,13 +19,13 @@ server.listen(8081, () => {
 
 //happens when theres a socket connection to the server.
 io.on('connection', (socket) => {
-  console.log('a user with id: '+socket.id+', connected'); //logs the connected user.
+  console.log('a user with id: ' + socket.id + ', connected'); //logs the connected user.
 
   //we create a new player and add it to our players object-array using the socket.id as an index key.
   players[socket.id] = {
     playerId: socket.id,
-    playerName: 'Player '+socket.id[3], //defines a uniqe playernamed based on the 4th char in the socket id. NOTE: This can be a space.
-    points : 0,
+    playerName: 'Player ' + socket.id[3], //defines a uniqe playernamed based on the 4th char in the socket id. NOTE: This can be a space.
+    points: 0,
     x: 200,
     y: 50,
   };
@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
 
   //happens when the socket disconnects again
   socket.on('disconnect', () => {
-    console.log('user with id: '+socket.id+', disconnected');
+    console.log('user with id: ' + socket.id + ', disconnected');
     delete players[socket.id]; //deletes the player-object for the disconnected player
     socket.broadcast.emit('disconnectPlayer', socket.id); //send the disconnected player's id to all other players
   });
@@ -47,8 +47,8 @@ io.on('connection', (socket) => {
 
   //happens when a user "uses" a card = when they drag/click a card-object.
   socket.on('addPoint', function (playerId, points) {
-    console.log("Adding "+points+" points to player: "+playerId);
-    players[playerId].points=players[playerId].points+points; //updates the playerdata to add the point.
+    console.log("Adding " + points + " points to player: " + playerId);
+    players[playerId].points = players[playerId].points + points; //updates the playerdata to add the point.
     socket.emit('update', players); //sends this message back to the sender
     socket.broadcast.emit('update', players); //sends this message to all others.
   });
