@@ -24,10 +24,16 @@ io.on('connection', function (socket) {
   //we create a new player and add it to our players object-array using the socket.id as an index key.
   players[socket.id] = {
     playerId: socket.id,
-    playerName: 'Player ' + socket.id[3], //defines a uniqe playernamed based on the 4th char in the socket id. NOTE: This can be a space.
+    playerName: 'Player ' + socket.id[3], //defines a uniqe playername based on the 4th char in the socket id. NOTE: This can be a space.
     points: 0,
     x: 200,
     y: 50,
+    character: {
+      race: "Human",
+      combatClass: "Nothing",
+      level: 0,
+      levelBonus: 0,
+    },
   };
   socket.emit('currentPlayers', players);   // send all the player-objects to the new player
   socket.broadcast.emit('newPlayer', players[socket.id]);  // send the new player-object to all other players

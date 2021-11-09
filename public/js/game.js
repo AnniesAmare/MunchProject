@@ -49,14 +49,15 @@ class Card3 extends Phaser.GameObjects.Container {
 
     let cardBack = this.scene.add.rectangle(0, 0, 120, 150, 0x9966ff).setInteractive();
     let cardText = this.scene.add.text(0, 0, 'A card');
-    this.add(cardBack);
-    this.add(cardText)
+    let self = this;
+    self.add(cardBack);
+    self.add(cardText)
 
     this.addPoints = function (points) {
       cardBack.on('pointerdown', function () {
         console.log("Adding " + points + " points to player");
         socket.emit('addPoint', socket.id, points);
-        this.destroy();
+        self.destroy();
       });
     }
 
@@ -64,7 +65,7 @@ class Card3 extends Phaser.GameObjects.Container {
       cardBack.on('pointerdown', function () {
         console.log("Adding " + -points + " points to player");
         socket.emit('addPoint', socket.id, -points);
-        this.destroy();
+        self.destroy();
       });
     }
 
@@ -182,7 +183,7 @@ function create() {
   });
 
   //Makes a "Deal Cards" text Graphic and sets it to be interactive.
-  this.dealCardsText = this.add.text(75, 70, 'DEAL CARDS', textStyle).setInteractive();
+  this.dealCardsText = this.add.text(config.width/2, config.height/2, 'DEAL CARDS', textStyle).setInteractive().setOrigin(0.5, 0.5);
 
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = function () {
@@ -238,7 +239,7 @@ function create() {
 
 }
 
-function update() {}
+function update() { }
 
 //Adds a playerInfoText graphic using a player-object recieved from the server
 function addPlayerText(self, playerInfo) {
