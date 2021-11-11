@@ -75,6 +75,7 @@ io.on('connection', function (socket) {
         playerCharacter.levelBonus = playerCharacter.levelBonus + points;
         playerCharacter.combatLevel = players[playerId].points + playerCharacter.levelBonus + points;
       } else {
+        // TODO: #6 Add clientside handling for player failing to equip an item
         console.log("Player is already wearing a type: " + equipmentType);
       }
     } else {

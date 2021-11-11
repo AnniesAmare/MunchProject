@@ -50,6 +50,8 @@ class TreasureCard extends Phaser.GameObjects.Container {
       });
     }
 
+    //TODO: #7 Add functionality for an item-card.
+    
     this.scene.add.existing(this);
   }
 }
