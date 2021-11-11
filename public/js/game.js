@@ -39,33 +39,17 @@ class TreasureCard extends Phaser.GameObjects.Container {
       });
     }
 
-    this.equipmentCard = function (levelBonus){
+    this.equipmentCard = function (levelBonus, equipmentType) {
       cardType = "equipmentCard"
       cardBack.setFillStyle(0xD8BC4B);
-      cardText.setText("Hat");
+      cardText.setText("" + equipmentType);
       cardBack.on('pointerdown', function () {
-        console.log("Adding "+ levelBonus + " to player");
-        socket.emit('treasure', socket.id, cardType, levelBonus);
-        self.destroy();
-      });
-
-    }
-
-    this.addPoints = function (points) {
-      cardBack.on('pointerdown', function () {
-        console.log("Adding " + points + " points to player");
-        socket.emit('addPoint', socket.id, points);
+        console.log("Adding " + levelBonus + " to player");
+        socket.emit('treasure', socket.id, cardType, levelBonus, equipmentType);
         self.destroy();
       });
     }
 
-    this.minusPoints = function (points) {
-      cardBack.on('pointerdown', function () {
-        console.log("Adding " + -points + " points to player");
-        socket.emit('addPoint', socket.id, -points);
-        self.destroy();
-      });
-    }
     this.scene.add.existing(this);
   }
 }
@@ -182,7 +166,7 @@ function create() {
       if (i > 2) {
         playercard.levelUpCard(3);
       } else {
-        playercard.equipmentCard(5);
+        playercard.equipmentCard(5, "Armor");
       }
 
       // let playerCard = new TreasureCard(this, self.socket);

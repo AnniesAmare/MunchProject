@@ -33,6 +33,8 @@ io.on('connection', function (socket) {
       combatClass: "Classless",
       combatLevel: 0,
       levelBonus: 0,
+      armor: false,
+      sword: false,
     },
   };
   socket.emit('currentPlayers', players);   // send all the player-objects to the new player
@@ -60,23 +62,37 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('update', players); //sends this message to all others.
   });
 
-  //happens when a user "uses" a treasurecard = when they drag/click a card-object.
-  socket.on('treasure', function (playerId, type, points) {
-    console.log("Using a treasurecard of type: " + type);
+  //happens when a user "uses" a treasurecard = when they click a treasureCard-object.
+  socket.on('treasure', function (playerId, cardType, points, treasureType) {
+    console.log("Using a treasurecard of cardType: " + cardType);
     let playerCharacter = players[playerId].character;
-    if (type == "levelUpCard") {
+    if (cardType == "levelUpCard") {
       players[playerId].points = players[playerId].points + points; //updates the playerdata to add the point.
       playerCharacter.combatLevel = playerCharacter.combatLevel + players[playerId].points; //updates the characterdata to add the levels
-    } else if (type == "equipmentCard") {
-      playerCharacter.levelBonus = playerCharacter.levelBonus + points;
-      playerCharacter.combatLevel = players[playerId].points + playerCharacter.levelBonus + points;
+    } else if (cardType == "equipmentCard") {
+      let equipmentType = treasureType;
+      if (equipmentIsUsable(playerCharacter, equipmentType)) {
+        playerCharacter.levelBonus = playerCharacter.levelBonus + points;
+        playerCharacter.combatLevel = players[playerId].points + playerCharacter.levelBonus + points;
+      } else {
+        console.log("Player is already wearing a type: " + equipmentType);
+      }
     } else {
       console.log("Unknown card");
     }
     socket.emit('update', players); //sends this message back to the sender
     socket.broadcast.emit('update', players); //sends this message to all others.
   });
-
-
 });
 
+function equipmentIsUsable(playerCharacter, equipmentType) {
+  if (equipmentType == "Armor" && playerCharacter.armor == false) {
+    playerCharacter.armor = true;
+    return true;
+  }
+  else if (equipmentType == "Sword" && playerCharacter.sword == false) {
+    playerCharacter.sword = true;
+    return true;
+  }
+  else { return false }
+}
