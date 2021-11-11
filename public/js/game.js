@@ -17,6 +17,7 @@ class TreasureCard extends Phaser.GameObjects.Container {
     super(scene);
     let self = this;
 
+    let cardType = undefined;
     let cardBack = this.scene.add.rectangle(0, 0, 120, 150, 0x9966ff).setInteractive();
     let cardText = this.scene.add.text(0, 0, 'A card');
 
@@ -28,12 +29,26 @@ class TreasureCard extends Phaser.GameObjects.Container {
     this.add(cardText);
 
     this.levelUpCard = function (numberOfLevels) {
+      cardType = "levelUpCard";
       cardBack.setFillStyle(0x3D85C6);
+      cardText.setText("LevelUp");
       cardBack.on('pointerdown', function () {
         console.log("Adding " + numberOfLevels + " points to player");
-        socket.emit('addPoint', socket.id, numberOfLevels);
+        socket.emit('treasure', socket.id, cardType, numberOfLevels);
         self.destroy();
       });
+    }
+
+    this.equipmentCard = function (levelBonus){
+      cardType = "equipmentCard"
+      cardBack.setFillStyle(0xD8BC4B);
+      cardText.setText("Hat");
+      cardBack.on('pointerdown', function () {
+        console.log("Adding "+ levelBonus + " to player");
+        socket.emit('treasure', socket.id, cardType, levelBonus);
+        self.destroy();
+      });
+
     }
 
     this.addPoints = function (points) {
@@ -167,7 +182,7 @@ function create() {
       if (i > 2) {
         playercard.levelUpCard(3);
       } else {
-        playercard.addPoints(5);
+        playercard.equipmentCard(5);
       }
 
       // let playerCard = new TreasureCard(this, self.socket);
@@ -219,7 +234,7 @@ function update() { }
 //Adds a playerInfoText graphic using a player-object recieved from the server
 function addPlayerText(self, playerInfo) {
   const playerText = self.add.text(0, 0, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
-  const character = playerInfo.character.combatClass + " - " + playerInfo.character.race + "\nLevel(+ bonus): " + playerInfo.character.level;
+  const character = playerInfo.character.combatClass + " - " + playerInfo.character.race + "\nLevel(+ bonus): " + playerInfo.character.combatLevel;
   const characterText = self.add.text(0, 25, character).setOrigin(0.5, 0.5);
   self.playerInfoText = self.add.container(playerInfo.x, playerInfo.y, [playerText, characterText]);
 }
@@ -227,7 +242,7 @@ function addPlayerText(self, playerInfo) {
 //Adds another players infoText grahic and adds this grapic to the group.
 function addOtherPlayersText(self, playerInfo) {
   const playerText = self.add.text(0, 0, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
-  const character = playerInfo.character.combatClass + " - " + playerInfo.character.race + "\nLevel(+ bonus): " + playerInfo.character.level;
+  const character = playerInfo.character.combatClass + " - " + playerInfo.character.race + "\nLevel(+ bonus): " + playerInfo.character.combatLevel;
   const characterText = self.add.text(0, 25, character).setOrigin(0.5, 0.5);
   const otherPlayerText = self.add.container(playerInfo.x, playerInfo.y, [playerText, characterText]);
   otherPlayerText.playerId = playerInfo.playerId;

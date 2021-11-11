@@ -31,7 +31,7 @@ io.on('connection', function (socket) {
     character: {
       race: "Human",
       combatClass: "Classless",
-      level: 0,
+      combatLevel: 0,
       levelBonus: 0,
     },
   };
@@ -55,10 +55,27 @@ io.on('connection', function (socket) {
   socket.on('addPoint', function (playerId, points) {
     console.log("Adding " + points + " points to player: " + playerId);
     players[playerId].points = players[playerId].points + points; //updates the playerdata to add the point.
-    players[playerId].character.level = players[playerId].points; //updates the characterdata to add the levels
+    players[playerId].character.combatLevel = players[playerId].points; //updates the characterdata to add the levels
     socket.emit('update', players); //sends this message back to the sender
     socket.broadcast.emit('update', players); //sends this message to all others.
   });
+
+    //happens when a user "uses" a treasurecard = when they drag/click a card-object.
+    socket.on('treasure', function (playerId, type, points) {
+      console.log("Using a treasurecard of type: " + type);
+      if (type == "levelUpCard"){
+        players[playerId].points = players[playerId].points + points; //updates the playerdata to add the point.
+        players[playerId].character.combatLevel = players[playerId].points; //updates the characterdata to add the levels
+      } else if (type == "equipmentCard") {
+        players[playerId].character.levelBonus = players[playerId].character.levelBonus+points;
+        players[playerId].character.combatLevel = players[playerId].points+players[playerId].character.levelBonus+points;
+      } else {
+        console.log("Unknown card");
+      }
+      socket.emit('update', players); //sends this message back to the sender
+      socket.broadcast.emit('update', players); //sends this message to all others.
+    });
+
 
 });
 
