@@ -60,21 +60,22 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('update', players); //sends this message to all others.
   });
 
-    //happens when a user "uses" a treasurecard = when they drag/click a card-object.
-    socket.on('treasure', function (playerId, type, points) {
-      console.log("Using a treasurecard of type: " + type);
-      if (type == "levelUpCard"){
-        players[playerId].points = players[playerId].points + points; //updates the playerdata to add the point.
-        players[playerId].character.combatLevel = players[playerId].points; //updates the characterdata to add the levels
-      } else if (type == "equipmentCard") {
-        players[playerId].character.levelBonus = players[playerId].character.levelBonus+points;
-        players[playerId].character.combatLevel = players[playerId].points+players[playerId].character.levelBonus+points;
-      } else {
-        console.log("Unknown card");
-      }
-      socket.emit('update', players); //sends this message back to the sender
-      socket.broadcast.emit('update', players); //sends this message to all others.
-    });
+  //happens when a user "uses" a treasurecard = when they drag/click a card-object.
+  socket.on('treasure', function (playerId, type, points) {
+    console.log("Using a treasurecard of type: " + type);
+    let playerCharacter = players[playerId].character;
+    if (type == "levelUpCard") {
+      players[playerId].points = players[playerId].points + points; //updates the playerdata to add the point.
+      playerCharacter.combatLevel = playerCharacter.combatLevel + players[playerId].points; //updates the characterdata to add the levels
+    } else if (type == "equipmentCard") {
+      playerCharacter.levelBonus = playerCharacter.levelBonus + points;
+      playerCharacter.combatLevel = players[playerId].points + playerCharacter.levelBonus + points;
+    } else {
+      console.log("Unknown card");
+    }
+    socket.emit('update', players); //sends this message back to the sender
+    socket.broadcast.emit('update', players); //sends this message to all others.
+  });
 
 
 });
