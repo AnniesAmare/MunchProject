@@ -87,6 +87,8 @@ function preload() {
 }
 
 function create() {
+  // TODO: #8 Implement a GameState
+
   let self = this;
   this.socket = io();
   this.otherPlayersInfoText = this.add.group(); //creates a group that holds all PlayerInfoText-objects for the other players.

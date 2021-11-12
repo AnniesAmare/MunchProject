@@ -65,15 +65,17 @@ io.on('connection', function (socket) {
   //happens when a user "uses" a treasurecard = when they click a treasureCard-object.
   socket.on('treasure', function (playerId, cardType, points, treasureType) {
     console.log("Using a treasurecard of cardType: " + cardType);
+    let player = players[playerId];
     let playerCharacter = players[playerId].character;
+
     if (cardType == "levelUpCard") {
-      players[playerId].points = players[playerId].points + points; //updates the playerdata to add the point.
-      playerCharacter.combatLevel = playerCharacter.combatLevel + players[playerId].points; //updates the characterdata to add the levels
+      player.points = player.points + points; //updates the playerdata to add the point.
+      playerCharacter.combatLevel = playerCharacter.combatLevel + player.points; //updates the characterdata to add the levels
     } else if (cardType == "equipmentCard") {
       let equipmentType = treasureType;
       if (equipmentIsUsable(playerCharacter, equipmentType)) {
         playerCharacter.levelBonus = playerCharacter.levelBonus + points;
-        playerCharacter.combatLevel = players[playerId].points + playerCharacter.levelBonus + points;
+        playerCharacter.combatLevel = player.points + playerCharacter.levelBonus + points;
       } else {
         // TODO: #6 Add clientside handling for player failing to equip an item
         console.log("Player is already wearing a type: " + equipmentType);
@@ -81,6 +83,8 @@ io.on('connection', function (socket) {
     } else {
       console.log("Unknown card");
     }
+
+    // tells all connected sockets to update to the changed player-objects.
     socket.emit('update', players); //sends this message back to the sender
     socket.broadcast.emit('update', players); //sends this message to all others.
   });
