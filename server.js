@@ -65,17 +65,19 @@ io.on('connection', function (socket) {
   //happens when a user "uses" a treasurecard = when they click a treasureCard-object.
   socket.on('treasure', function (playerId, cardType, points, treasureType) {
     console.log("Using a treasurecard of cardType: " + cardType);
-    let player = players[playerId];
-    let playerCharacter = players[playerId].character;
+    const player = players[playerId];
+    const playerCharacter = players[playerId].character;
 
     if (cardType == "levelUpCard") {
       player.points = player.points + points; //updates the playerdata to add the point.
       playerCharacter.combatLevel = playerCharacter.combatLevel + player.points; //updates the characterdata to add the levels
-    } else if (cardType == "equipmentCard") {
+    } 
+    
+    else if (cardType == "equipmentCard") {
       let equipmentType = treasureType;
       if (equipmentIsUsable(playerCharacter, equipmentType)) {
         playerCharacter.levelBonus = playerCharacter.levelBonus + points;
-        playerCharacter.combatLevel = player.points + playerCharacter.levelBonus + points;
+        playerCharacter.combatLevel = player.points + playerCharacter.levelBonus;
       } else {
         // TODO: #6 Add clientside handling for player failing to equip an item
         console.log("Player is already wearing a type: " + equipmentType);
@@ -91,6 +93,7 @@ io.on('connection', function (socket) {
 });
 
 function equipmentIsUsable(playerCharacter, equipmentType) {
+  // TODO: #9 Expand to include lowercase-armor and unknown armor-types
   if (equipmentType == "Armor" && playerCharacter.armor == false) {
     playerCharacter.armor = true;
     return true;

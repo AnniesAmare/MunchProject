@@ -51,7 +51,7 @@ class TreasureCard extends Phaser.GameObjects.Container {
     }
 
     //TODO: #7 Add functionality for an item-card.
-    
+
     this.scene.add.existing(this);
   }
 }
@@ -172,7 +172,6 @@ function create() {
       } else {
         playercard.equipmentCard(5, "Armor");
       }
-
       // let playerCard = new TreasureCard(this, self.socket);
       // playerCard.render(100 + (i * 200), 440);
     }
@@ -214,7 +213,6 @@ function create() {
     gameObject.destroy();
     console.log("Adding your point");
   })
-
 }
 
 function update() { }
