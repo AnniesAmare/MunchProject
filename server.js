@@ -25,6 +25,7 @@ io.on('connection', function (socket) {
   players[socket.id] = {
     playerId: socket.id,
     playerName: 'Player ' + socket.id[3], //defines a uniqe playername based on the 4th char in the socket id. NOTE: This can be a space.
+    playerState: 0,
     points: 0,
     x: 200,
     y: 50,

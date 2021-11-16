@@ -55,9 +55,6 @@ class TreasureCard extends Phaser.GameObjects.Container {
     this.scene.add.existing(this);
   }
 }
-
-
-
 var config = {
   type: Phaser.AUTO,
   parent: 'phaser-example',
@@ -81,8 +78,9 @@ var textStyle = {
   fill: '#ffffff',
   align: 'center',
 };
-
 var game = new Phaser.Game(config);
+var playerState = 100;
+
 function preload() {
 }
 
@@ -100,6 +98,7 @@ function create() {
     //keys = socket.id's = an id for every player
     Object.keys(players).forEach(function (id) {
       if (players[id].playerId === self.socket.id) {
+        playerState = players[id].playerState;
         addPlayerText(self, players[id]);
       } else {
         count = count + 1;
@@ -108,7 +107,7 @@ function create() {
       }
     });
   });
-
+  console.log(playerState);
   //Input: a single player-object (the new player)
   //Output: adds a text grapic for the new player and rearanges all other players
   this.socket.on('newPlayer', function (player) {
