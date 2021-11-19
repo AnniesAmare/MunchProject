@@ -1,4 +1,31 @@
 #MunchProject CHANGELOG
+#November 16th 
+Added a playerState variable which will work like a gameState, and help us detirmine when is a player turn,
+and if theyre in a fight, or want to join another players fight against a monster.
+#November 12th 
+Requirements for unit testing added in simple text. 
+#November 11th 
+Added an equipment card under the umbrella of treasureCards. ATM this works as armor.
+Variables are added to make sure you can´t wear armor on top of armor. 
+
+Seperated level up in combatLevel and levelBonus, and these are now made to update seperadly as well. 
+
+
+#November 9th 
+Created a new Card creation method, and created a card.js file to contain it
+
+Updated server add-point function
+
+Created more cards (card2, card3, ect.) to make different card to play around.
+These all extend the original card class.
+
+Added a character variable, and made all players start as humans. 
+The add point function is now able to add points to the character. 
+
+Created treasureCards, and further added a levelUp function to make the treasure cards level up your character.
+
+#November 8th 
+Unit testing added 
 #November 7th 
 Cloned the README.md file from the DigitalMunch project into the MunchProject project. 
 Changes has been made to the file to acocunt for the change of technologies we use.
