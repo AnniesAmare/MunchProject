@@ -1,17 +1,3 @@
-class Card {
-  constructor(scene) {
-    this.render = function (x, y) {
-      let cardBack = scene.add.rectangle(0, 0, 120, 150, 0x9966ff);
-      let cardText = scene.add.text(0, 0, 'A card');
-      let card = scene.add.container(x, y, [cardBack, cardText])
-      card.setSize(cardBack.width, cardBack.height);
-      card.setInteractive();
-      scene.input.setDraggable(card);
-      return card;
-    }
-  }
-}
-
 class TreasureCard extends Phaser.GameObjects.Container {
   constructor(scene, socket, x, y) {
     super(scene);
@@ -49,9 +35,7 @@ class TreasureCard extends Phaser.GameObjects.Container {
         self.destroy();
       });
     }
-
     //TODO: #7 Add functionality for an item-card.
-
     this.scene.add.existing(this);
   }
 }
@@ -86,9 +70,8 @@ function preload() {
 
 function create() {
   // TODO: #8 Implement a GameState
-
-  let self = this;
   this.socket = io();
+  let self = this;
   this.otherPlayersInfoText = this.add.group(); //creates a group that holds all PlayerInfoText-objects for the other players.
 
   // Input: an array of players indexed with socket.id.
