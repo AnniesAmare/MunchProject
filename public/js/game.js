@@ -1,4 +1,3 @@
-//Game
 class TreasureCard extends Phaser.GameObjects.Container {
   constructor(scene, socket, x, y) {
     super(scene);
