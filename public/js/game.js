@@ -44,7 +44,6 @@ class GameState1 extends Phaser.GameObjects.Container {
   constructor(scene, socket) {
     super(scene);
     let self = this;
-
     let text = this.scene.add.text(0, 0, 'This is GameState1');
 
     this.scene = scene;
@@ -62,7 +61,6 @@ class GameState0 extends Phaser.GameObjects.Container {
   constructor(scene, socket) {
     super(scene);
     let self = this;
-
     let text = this.scene.add.text(0, 0, 'This is GameState0');
 
     this.scene = scene;
@@ -123,7 +121,6 @@ function create() {
     Object.keys(players).forEach(function (id) {
       if (players[id].playerId === self.socket.id) {
         playerState = players[id].playerState;
-        console.log(playerState);
         addPlayerText(self, players[id]);
       } else {
         count = count + 1;
@@ -134,33 +131,19 @@ function create() {
     self.socket.emit('globalUpdate');
   });
 
-  //Input: a single player-object (the new player)
-  //Output: adds a text grapic for the new player and rearanges all other players
-  this.socket.on('newPlayer', function (player) {
-    addOtherPlayersText(self, player);
-    let count = 1;
-    self.otherPlayersInfoText.getChildren().forEach(function (otherPlayerText) {
-      count = count + 1;
-      otherPlayerText.x = 200 * count;
-    });
-  });
-
   //Input: an array of players indexed with socket.id
   //Output: removes existing text graphics for player info, and redraws them using the provided array
   this.socket.on('update', function (players) {
     console.log("Updating");
     self.playerInfoText.destroy();
     //Removes the text-graphics for other players info.
-    const allOtherPlayersText = self.otherPlayersInfoText.getChildren();
-    for (let index = allOtherPlayersText.length - 1; index >= 0; index--) {
-      const otherPlayerText = allOtherPlayersText[index];
-      otherPlayerText.destroy();
-    }
+    destroyChildren(self.otherPlayersInfoText);
     //Makes the new objects and spaces them out
     let count = 1;
     Object.keys(players).forEach(function (id) {
       if (players[id].playerId === self.socket.id) {
         addPlayerText(self, players[id]);
+        playerState = players[id].playerState;
       } else {
         count = count + 1;
         players[id].x = 200 * count;
@@ -182,22 +165,6 @@ function create() {
       console.log("gameState-0");
       let gameState = new GameState1(self, self.socket);
       self.gameStateGroup.add(gameState);
-    }
-  });
-
-  //Input: the disconnected players socket.id.
-  //Output: removes the disconnected player's info text-graphic and reorders all the others.
-  this.socket.on('disconnectPlayer', function (playerId) {
-    let count = 1;
-    const allOtherPlayersText = self.otherPlayersInfoText.getChildren();
-    for (let index = allOtherPlayersText.length - 1; index >= 0; index--) {
-      const otherPlayerText = allOtherPlayersText[index];
-      if (playerId === otherPlayerText.playerId) {
-        otherPlayerText.destroy();
-      } else {
-        count = count + 1;
-        otherPlayerText.x = 200 * count;
-      }
     }
   });
 
@@ -239,7 +206,6 @@ function create() {
     self.dealCardsText.setColor('#00ffff');
   })
 }
-
 
 function update() { }
 

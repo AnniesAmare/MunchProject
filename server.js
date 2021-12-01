@@ -39,13 +39,13 @@ io.on('connection', function (socket) {
     },
   };
   socket.emit('currentPlayers', players);   // send all the player-objects to the new player
-  socket.broadcast.emit('newPlayer', players[socket.id]);  // send the new player-object to all other players
+  socket.broadcast.emit('update', players);  // updates all players.
 
   //happens when the socket disconnects again
   socket.on('disconnect', function () {
     console.log('user with id: ' + socket.id + ', disconnected');
     delete players[socket.id]; //deletes the player-object for the disconnected player
-    socket.broadcast.emit('disconnectPlayer', socket.id); //send the disconnected player's id to all other players
+    socket.broadcast.emit('update', players); //send the disconnected player's id to all other players
   });
 
   //happens when a player presses the 'dealCardsText on their screen
