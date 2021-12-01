@@ -63,16 +63,20 @@ var textStyle = {
   align: 'center',
 };
 var game = new Phaser.Game(config);
-var playerState = 100;
+
 
 function preload() {
 }
 
 function create() {
   // TODO: #8 Implement a GameState
+  let playerState = 1;
+
   this.socket = io();
   let self = this;
   this.otherPlayersInfoText = this.add.group(); //creates a group that holds all PlayerInfoText-objects for the other players.
+  this.gameStateGroup = this.add.group(); //creates a group to hold all gamestate stuff.
+
 
   // Input: an array of players indexed with socket.id.
   // Output: text graphics for all players.
@@ -82,6 +86,7 @@ function create() {
     Object.keys(players).forEach(function (id) {
       if (players[id].playerId === self.socket.id) {
         playerState = players[id].playerState;
+        console.log(playerState);
         addPlayerText(self, players[id]);
       } else {
         count = count + 1;
@@ -89,8 +94,9 @@ function create() {
         addOtherPlayersText(self, players[id]);
       }
     });
+    self.socket.emit('globalUpdate');
   });
-  console.log(playerState);
+
   //Input: a single player-object (the new player)
   //Output: adds a text grapic for the new player and rearanges all other players
   this.socket.on('newPlayer', function (player) {
@@ -124,6 +130,13 @@ function create() {
         addOtherPlayersText(self, players[id]);
       }
     });
+
+    if (playerState == null) {
+      console.log("This is an error");
+    } 
+    if (playerState == 0) {
+      console.log("It could work");
+    }
   });
 
   //Input: the disconnected players socket.id.
@@ -154,8 +167,6 @@ function create() {
       } else {
         playercard.equipmentCard(5, "Armor");
       }
-      // let playerCard = new TreasureCard(this, self.socket);
-      // playerCard.render(100 + (i * 200), 440);
     }
   }
 
@@ -180,20 +191,6 @@ function create() {
 
   this.dealCardsText.on('pointerout', function () {
     self.dealCardsText.setColor('#00ffff');
-  })
-
-  //Dictates logic for dragging a game-object
-  this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-    gameObject.x = dragX;
-    gameObject.y = dragY;
-  })
-
-  //Dictates logic for when a dragged object is let go
-  //This function emits an 'addPoint' notification to the server and destroys the used object.
-  this.input.on('dragend', function (pointer, gameObject) {
-    self.socket.emit('addPoint', self.socket.id);
-    gameObject.destroy();
-    console.log("Adding your point");
   })
 }
 
