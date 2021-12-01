@@ -39,6 +39,43 @@ class TreasureCard extends Phaser.GameObjects.Container {
     this.scene.add.existing(this);
   }
 }
+
+class GameState1 extends Phaser.GameObjects.Container {
+  constructor(scene, socket) {
+    super(scene);
+    let self = this;
+
+    let text = this.scene.add.text(0, 0, 'This is GameState1');
+
+    this.scene = scene;
+    this.x = 500;
+    this.y = 200;
+
+    this.add(text);
+
+    //Adds all the tings to the scene
+    this.scene.add.existing(this);
+  }
+}
+
+class GameState0 extends Phaser.GameObjects.Container {
+  constructor(scene, socket) {
+    super(scene);
+    let self = this;
+
+    let text = this.scene.add.text(0, 0, 'This is GameState0');
+
+    this.scene = scene;
+    this.x = 500;
+    this.y = 200;
+
+    this.add(text);
+
+    //Adds all the tings to the scene
+    this.scene.add.existing(this);
+  }
+}
+
 var config = {
   type: Phaser.AUTO,
   parent: 'phaser-example',
@@ -70,7 +107,7 @@ function preload() {
 
 function create() {
   // TODO: #8 Implement a GameState
-  let playerState = 1;
+  let playerState = null;
 
   this.socket = io();
   let self = this;
@@ -136,7 +173,15 @@ function create() {
       console.log("This is an error");
     } 
     if (playerState == 0) {
-      console.log("It could work");
+      console.log("gameState-0");
+      destroyChildren(self.gameStateGroup);
+      let gameState = new GameState0(self, self.socket);
+      self.gameStateGroup.add(gameState);
+    }
+    if (playerState == 1){
+      console.log("gameState-0");
+      let gameState = new GameState1(self, self.socket);
+      self.gameStateGroup.add(gameState);
     }
   });
 
@@ -195,6 +240,7 @@ function create() {
   })
 }
 
+
 function update() { }
 
 //Adds a playerInfoText graphic using a player-object recieved from the server
@@ -213,6 +259,14 @@ function addOtherPlayersText(self, playerInfo) {
   const otherPlayerText = self.add.container(playerInfo.x, playerInfo.y, [playerText, characterText]);
   otherPlayerText.playerId = playerInfo.playerId;
   self.otherPlayersInfoText.add(otherPlayerText);
+}
+
+function destroyChildren(groupName){
+  const allChildren = groupName.getChildren();
+  for (let index = allChildren.length - 1; index >= 0; index--) {
+  const child = allChildren[index];
+  child.destroy();
+  }
 }
 
 
