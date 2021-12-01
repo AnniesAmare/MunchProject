@@ -131,6 +131,7 @@ function create() {
       }
     });
 
+    //Handles gamestates every time there is an update
     if (playerState == null) {
       console.log("This is an error");
     } 
