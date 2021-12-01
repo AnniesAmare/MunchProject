@@ -55,12 +55,10 @@ io.on('connection', function (socket) {
   });
 
   //happens when a user "uses" a card = when they drag/click a card-object.
-  socket.on('addPoint', function (playerId, points) {
-    console.log("Adding " + points + " points to player: " + playerId);
-    players[playerId].points = players[playerId].points + points; //updates the playerdata to add the point.
-    players[playerId].character.combatLevel = players[playerId].points; //updates the characterdata to add the levels
-    socket.emit('update', players); //sends this message back to the sender
-    socket.broadcast.emit('update', players); //sends this message to all others.
+  socket.on('globalUpdate', function () {
+        // tells all connected sockets to update
+        socket.emit('update', players); //sends this message back to the sender
+        socket.broadcast.emit('update', players); //sends this message to all others.
   });
 
   //happens when a user "uses" a treasurecard = when they click a treasureCard-object.
