@@ -1,106 +1,6 @@
-class TreasureCard extends Phaser.GameObjects.Container {
-  constructor(scene, socket, x, y) {
-    super(scene);
-    let self = this;
-
-    let cardType = undefined;
-    let cardBack = this.scene.add.rectangle(0, 0, 120, 150, 0x9966ff).setInteractive();
-    let cardText = this.scene.add.text(0, 0, 'A card');
-
-    this.scene = scene;
-    this.x = x;
-    this.y = y;
-
-    this.add(cardBack);
-    this.add(cardText);
-
-    this.levelUpCard = function (numberOfLevels) {
-      cardType = "levelUpCard";
-      cardBack.setFillStyle(0x3D85C6);
-      cardText.setText("LevelUp");
-      cardBack.on('pointerdown', function () {
-        console.log("Adding " + numberOfLevels + " points to player");
-        socket.emit('treasure', cardType, numberOfLevels);
-        self.destroy();
-      });
-    }
-
-    this.equipmentCard = function (levelBonus, equipmentType) {
-      cardType = "equipmentCard"
-      cardBack.setFillStyle(0xD8BC4B);
-      cardText.setText("" + equipmentType);
-      cardBack.on('pointerdown', function () {
-        console.log("Adding " + levelBonus + " to player");
-        socket.emit('treasure', cardType, levelBonus, equipmentType);
-        self.destroy();
-      });
-    }
-    //TODO: #7 Add functionality for an item-card.
-    this.scene.add.existing(this);
-  }
-}
-
-class GameState1 extends Phaser.GameObjects.Container {
-  constructor(scene, socket) {
-    super(scene);
-    this.scene = scene;
-    let self = this;
-    let text = scene.add.text(0, 0, 'This is GameState 1').setInteractive().setOrigin(0.5, 0.5);
-    let dealCardsText = scene.add.text(0, 50, 'DEAL CARDS', textStyle).setInteractive().setOrigin(0.5, 0.5);
-
-    this.x = 500;
-    this.y = 200;
-
-    this.add(text);
-    this.add(dealCardsText);
-
-    text.on('pointerdown', function () {
-      socket.emit('changeState', 0);
-      console.log('state change');
-    });
-
-    //Defines a function that is run when the mouse is pressed (pointerdown) on the dealCardsText-grapic.
-    dealCardsText.on('pointerdown', function () {
-      scene.dealCards();
-      socket.emit('dealCards');
-      dealCardsText.destroy();
-    })
-
-    //Hover effect
-    dealCardsText.on('pointerover', function () {
-      dealCardsText.setColor('#ff69b4');
-    })
-
-    dealCardsText.on('pointerout', function () {
-      dealCardsText.setColor('#00ffff');
-    })
-
-    //Adds all the tings to the scene
-    this.scene.add.existing(this);
-  }
-}
-
-class GameState0 extends Phaser.GameObjects.Container {
-  constructor(scene, socket) {
-    super(scene);
-    let self = this;
-    let text = this.scene.add.text(0, 0, 'This is GameState 0').setInteractive();
-
-    this.scene = scene;
-    this.x = 500;
-    this.y = 200;
-
-    this.add(text);
-
-    text.on('pointerdown', function () {
-      socket.emit('changeState', 1);
-      console.log('state change');
-    });
-
-    //Adds all the tings to the scene
-    this.scene.add.existing(this);
-  }
-}
+import TreasureCard from './components/TreasureCard.js';
+import GameState1 from './gamestates/GameState1.js';
+import GameState0 from './gamestates/GameState0.js';
 
 var config = {
   type: Phaser.AUTO,
@@ -119,11 +19,6 @@ var config = {
     create: create,
     update: update
   }
-};
-var textStyle = {
-  font: "normal 18px Trebuchet MS",
-  fill: '#ffffff',
-  align: 'center',
 };
 var game = new Phaser.Game(config);
 
@@ -194,8 +89,6 @@ function create() {
       self.gameStateGroup.add(gameState);
     }
   });
-
-
 
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = function () {
