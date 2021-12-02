@@ -20,7 +20,7 @@ class TreasureCard extends Phaser.GameObjects.Container {
       cardText.setText("LevelUp");
       cardBack.on('pointerdown', function () {
         console.log("Adding " + numberOfLevels + " points to player");
-        socket.emit('treasure', socket.id, cardType, numberOfLevels);
+        socket.emit('treasure', cardType, numberOfLevels);
         self.destroy();
       });
     }
@@ -31,7 +31,7 @@ class TreasureCard extends Phaser.GameObjects.Container {
       cardText.setText("" + equipmentType);
       cardBack.on('pointerdown', function () {
         console.log("Adding " + levelBonus + " to player");
-        socket.emit('treasure', socket.id, cardType, levelBonus, equipmentType);
+        socket.emit('treasure', cardType, levelBonus, equipmentType);
         self.destroy();
       });
     }
@@ -44,13 +44,18 @@ class GameState1 extends Phaser.GameObjects.Container {
   constructor(scene, socket) {
     super(scene);
     let self = this;
-    let text = this.scene.add.text(0, 0, 'This is GameState1');
+    let text = this.scene.add.text(0, 0, 'This is GameState 1').setInteractive();
 
     this.scene = scene;
     this.x = 500;
     this.y = 200;
 
     this.add(text);
+
+    text.on('pointerdown', function () {
+      socket.emit('changeState', 0);
+      console.log('state change');
+    });
 
     //Adds all the tings to the scene
     this.scene.add.existing(this);
@@ -61,13 +66,18 @@ class GameState0 extends Phaser.GameObjects.Container {
   constructor(scene, socket) {
     super(scene);
     let self = this;
-    let text = this.scene.add.text(0, 0, 'This is GameState0');
+    let text = this.scene.add.text(0, 0, 'This is GameState 0').setInteractive();
 
     this.scene = scene;
     this.x = 500;
     this.y = 200;
 
     this.add(text);
+
+    text.on('pointerdown', function () {
+      socket.emit('changeState', 1);
+      console.log('state change');
+    });
 
     //Adds all the tings to the scene
     this.scene.add.existing(this);
@@ -163,6 +173,7 @@ function create() {
     }
     if (playerState == 1){
       console.log("gameState-1");
+      destroyChildren(self.gameStateGroup);
       let gameState = new GameState1(self, self.socket);
       self.gameStateGroup.add(gameState);
     }
