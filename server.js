@@ -54,6 +54,15 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('dealCards'); //sends a message to all connected players to execute the dealCards-function.
   });
 
+  //happens when a state-update is emitted from the client.
+  socket.on('changeState', function(newState){
+    players[socket.id].playerState = newState;
+
+    // tells all connected sockets to update to the changed player-objects.
+    socket.emit('update', players); //sends this message back to the sender
+    socket.broadcast.emit('update', players); //sends this message to all others.
+  })
+
   //happens when a user "uses" a card = when they drag/click a card-object.
   socket.on('globalUpdate', function () {
         // tells all connected sockets to update
@@ -62,10 +71,10 @@ io.on('connection', function (socket) {
   });
 
   //happens when a user "uses" a treasurecard = when they click a treasureCard-object.
-  socket.on('treasure', function (playerId, cardType, points, treasureType) {
+  socket.on('treasure', function (cardType, points, treasureType) {
     console.log("Using a treasurecard of cardType: " + cardType);
-    const player = players[playerId];
-    const playerCharacter = players[playerId].character;
+    const player = players[socket.id];
+    const playerCharacter = player.character;
 
     if (cardType == "levelUpCard") {
       player.points = player.points + points; //updates the playerdata to add the point.
@@ -102,4 +111,4 @@ function equipmentIsUsable(playerCharacter, equipmentType) {
     return true;
   }
   else { return false }
-}
+};
