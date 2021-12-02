@@ -162,7 +162,7 @@ function create() {
       self.gameStateGroup.add(gameState);
     }
     if (playerState == 1){
-      console.log("gameState-0");
+      console.log("gameState-1");
       let gameState = new GameState1(self, self.socket);
       self.gameStateGroup.add(gameState);
     }
