@@ -43,19 +43,37 @@ class TreasureCard extends Phaser.GameObjects.Container {
 class GameState1 extends Phaser.GameObjects.Container {
   constructor(scene, socket) {
     super(scene);
-    let self = this;
-    let text = this.scene.add.text(0, 0, 'This is GameState 1').setInteractive();
-
     this.scene = scene;
+    let self = this;
+    let text = scene.add.text(0, 0, 'This is GameState 1').setInteractive().setOrigin(0.5, 0.5);
+    let dealCardsText = scene.add.text(0, 50, 'DEAL CARDS', textStyle).setInteractive().setOrigin(0.5, 0.5);
+
     this.x = 500;
     this.y = 200;
 
     this.add(text);
+    this.add(dealCardsText);
 
     text.on('pointerdown', function () {
       socket.emit('changeState', 0);
       console.log('state change');
     });
+
+    //Defines a function that is run when the mouse is pressed (pointerdown) on the dealCardsText-grapic.
+    dealCardsText.on('pointerdown', function () {
+      scene.dealCards();
+      socket.emit('dealCards');
+      dealCardsText.destroy();
+    })
+
+    //Hover effect
+    dealCardsText.on('pointerover', function () {
+      dealCardsText.setColor('#ff69b4');
+    })
+
+    dealCardsText.on('pointerout', function () {
+      dealCardsText.setColor('#00ffff');
+    })
 
     //Adds all the tings to the scene
     this.scene.add.existing(this);
@@ -166,21 +184,18 @@ function create() {
       console.log("This is an error");
     } 
     if (playerState == 0) {
-      console.log("gameState-0");
       destroyChildren(self.gameStateGroup);
       let gameState = new GameState0(self, self.socket);
       self.gameStateGroup.add(gameState);
     }
     if (playerState == 1){
-      console.log("gameState-1");
       destroyChildren(self.gameStateGroup);
       let gameState = new GameState1(self, self.socket);
       self.gameStateGroup.add(gameState);
     }
   });
 
-  //Makes a "Deal Cards" text Graphic and sets it to be interactive.
-  this.dealCardsText = this.add.text(config.width / 2, config.height / 2, 'DEAL CARDS', textStyle).setInteractive().setOrigin(0.5, 0.5);
+
 
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = function () {
@@ -194,28 +209,12 @@ function create() {
     }
   }
 
-  //Defines a function that is run when the mouse is pressed (pointerdown) on the dealCardsText-grapic.
-  this.dealCardsText.on('pointerdown', function () {
-    self.dealCards();
-    self.socket.emit('dealCards');
-    self.dealCardsText.destroy();
-  })
-
   //Handles the deal cards event, by recieving the signal to deal cards and doing it.
   this.socket.on('dealCards', function () {
     console.log("Now dealing cards!");
     self.dealCards();
     self.dealCardsText.destroy();
   });
-
-  //Hover effect
-  this.dealCardsText.on('pointerover', function () {
-    self.dealCardsText.setColor('#ff69b4');
-  })
-
-  this.dealCardsText.on('pointerout', function () {
-    self.dealCardsText.setColor('#00ffff');
-  })
 }
 
 function update() { }
