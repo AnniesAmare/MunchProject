@@ -4,7 +4,7 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-var players = {}; //the object array used to 
+var players = {}; //the object array used to
 
 //defines the locations of the relevant files
 app.use(express.static(__dirname + '/public'));
@@ -15,7 +15,7 @@ app.get('/', function (req, res) {
 
 
 //selects the port for the localhost-server.
-server.listen(8081, function () {
+server.listen(8082, function () {
   console.log('listening on *:8081');
 });
 
