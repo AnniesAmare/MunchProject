@@ -77,7 +77,7 @@ io.on('connection', function (socket) {
     console.log("Using a treasurecard of cardType: " + cardType);
     const player = players[socket.id];
     const playerCharacter = player.character;
-
+// test
     if (cardType == "levelUpCard") {
       player.points = player.points + points; //updates the playerdata to add the point.
       playerCharacter.combatLevel = playerCharacter.combatLevel + player.points; //updates the characterdata to add the levels
