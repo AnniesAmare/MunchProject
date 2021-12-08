@@ -15,7 +15,7 @@ app.get('/', function (req, res) {
 
 
 //selects the port for the localhost-server.
-server.listen(8082, function () {
+server.listen(8081, function () {
   console.log('listening on *:8081');
 });
 
@@ -91,6 +91,7 @@ io.on('connection', function (socket) {
       } else {
         // TODO: #6 Add clientside handling for player failing to equip an item
         console.log("Player is already wearing a type: " + equipmentType);
+        //test to se if branch works!!!!
       }
     } else {
       console.log("Unknown card");
