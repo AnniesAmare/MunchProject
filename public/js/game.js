@@ -119,6 +119,14 @@ function addPlayerText(self, playerInfo) {
   const character = playerInfo.character.combatClass + " - " + playerInfo.character.race + "\nLevel(+ bonus): " + playerInfo.character.combatLevel;
   const characterText = self.add.text(0, 25, character).setOrigin(0.5, 0.5);
   self.playerInfoText = self.add.container(playerInfo.x, playerInfo.y, [playerText, characterText]);
+
+  // Pseudo kode
+  //get the scene to post something new
+  //Get the scene to display what gameState we are in at a given moment
+  //Create a button to press when ready for the game to begin
+  //Get the button to move gamestates
+  //get the button to move gamestates when all players have clicked it6
+  const gameStateText = self.add.text(0,50,"gameState is:" + playerState).setOrigin(0.5, 0-5);
 }
 
 //Adds another players infoText grahic and adds this grapic to the group.
