@@ -4,6 +4,7 @@
 //import * as game from '../../public/js/game.js';
 
 const {Phaser} = require('phaser.js');
+//test
 
 //mocks phaser module
 //jest.mock('phaser');
