@@ -91,7 +91,7 @@ io.on('connection', function (socket) {
       } else {
         // TODO: #6 Add clientside handling for player failing to equip an item
         console.log("Player is already wearing a type: " + equipmentType);
-        //test to se if branch works!!!! Only commit to branch
+        //test to se if branch works!!!!
       }
     } else {
       console.log("Unknown card");

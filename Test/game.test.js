@@ -1,11 +1,15 @@
 //imports the phaser library from node_modules in project folder
-import * as phaser from '../node_modules';
+//import * as phaser from '../phaser/src';
+
+//import * as game from '../../public/js/game.js';
+
+const {Phaser} = require('phaser.js');
 
 //mocks phaser module
-jest.mock('phaser');
+//jest.mock('phaser');
 
 //ensures that phaser module has been loaded
-expect(phaser.get).toHaveBeenCalled();
+//expect(phaser.get).toHaveBeenCalled();
 
 /*requireActual(moduleName) Returns the actual module instead of a mock,
 bypassing all checks on whether the module should receive a mock implementation or not
@@ -17,7 +21,7 @@ May or may not be useful when mocking socket.io*/
 
 //import game functions
 //const {addPlayerText} = require('../public/js/game.js');
-const {dealCards} = require('../public/js/game.js');
+//const {dealCards} = require('../public/js/game.js');
 
 
 
