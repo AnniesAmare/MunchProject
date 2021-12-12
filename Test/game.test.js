@@ -3,8 +3,7 @@
 
 //import * as game from '../../public/js/game.js';
 
-const {Phaser} = require('phaser.js');
-//test
+//const {Phaser} = require('phaser.js');
 
 //mocks phaser module
 //jest.mock('phaser');
@@ -23,6 +22,15 @@ May or may not be useful when mocking socket.io*/
 //import game functions
 //const {addPlayerText} = require('../public/js/game.js');
 //const {dealCards} = require('../public/js/game.js');
+
+
+//const io = require('../public/index.html');
+//const io = require('socket.io-client');
+//const http = require('http');
+//const ioBack = require('socket.io');
+
+const io = require('../server.js');
+
 
 
 
