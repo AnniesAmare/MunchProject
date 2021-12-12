@@ -24,12 +24,70 @@ May or may not be useful when mocking socket.io*/
 //const {dealCards} = require('../public/js/game.js');
 
 
+//const io = require('../server.js');
 //const io = require('../public/index.html');
+
 //const io = require('socket.io-client');
 //const http = require('http');
 //const ioBack = require('socket.io');
 
-const io = require('../server.js');
+//import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+const io = require('socket.io-client');
+//const io = require('/socket.io/socket.io.js');
+const http = require('http');
+const ioBack = require('socket.io');
+
+let socket;
+let httpServer;
+let httpServerAddr;
+let ioServer;
+
+/**
+ * Setup WS & HTTP servers
+ */
+beforeAll((done) => {
+    httpServer = http.createServer().listen();
+    httpServerAddr = httpServer.listen().address();
+    ioServer = ioBack(httpServer);
+    done();
+});
+
+/**
+ *  Cleanup WS & HTTP servers
+ */
+afterAll((done) => {
+    ioServer.close();
+    httpServer.close();
+    done();
+});
+
+/**
+ * Run before each test
+ */
+beforeEach((done) => {
+    // Setup
+    // Do not hardcode server port and address, square brackets are used for IPv6
+    socket = io.connect(`http://[${httpServerAddr.address}]:${httpServerAddr.port}`, {
+        'reconnection delay': 0,
+        'reopen delay': 0,
+        'force new connection': true,
+        transports: ['websocket'],
+    });
+    socket.on('connect', () => {
+        done();
+    });
+});
+
+/**
+ * Run after each test
+ */
+afterEach((done) => {
+    // Cleanup
+    if (socket.connected) {
+        socket.disconnect();
+    }
+    done();
+});
 
 
 
