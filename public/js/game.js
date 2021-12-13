@@ -156,6 +156,7 @@ NOTE: To test something, type this in your terminal:
 //module.exports = addPlayerText;
 //module.exports = this.dealCards();
 
-import * as Phaser from 'phaser';
+//import * as Phaser from 'phaser';
+//import * as io from '../../node_modules/socket.io-client/dist/socket.io.esm.min.js';
 
-module.exports = {Phaser};
+//module.exports = {io};

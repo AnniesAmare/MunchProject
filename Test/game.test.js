@@ -39,7 +39,13 @@ May or may not be useful when mocking socket.io*/
 //const io = require('https://cdn.socket.io/socket.io-3.0.1.min.js');
 
 
-const {Phaser} = require("../public/js/game.js");
+//const {Phaser} = require("../public/js/game.js");
+
+//import { Socket } from "/socket.io/socket";
+
+//const {io} = require('../public/js/game.js');
+
+//const {io} = require('../server.js');
 
 // test function to see if test environment works
 const functions = {

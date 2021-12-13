@@ -70,6 +70,11 @@ module.exports = {
   //   "node_modules"
   // ],
 
+    moduleDirectories: [
+        "node_modules",
+        "public"
+    ],
+
   // An array of file extensions your modules use
   moduleFileExtensions: [
     "js",
@@ -180,7 +185,10 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   // transform: undefined,
-  transform: {"\\.[jt]sx?$": "babel-jest"},
+  transform: {
+      "\\.[jt]sx?$": "babel-jest",
+      "\\.m?js$": "esm"
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
