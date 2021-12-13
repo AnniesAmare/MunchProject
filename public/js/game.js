@@ -155,3 +155,7 @@ NOTE: To test something, type this in your terminal:
 //function exports for UnitTests
 //module.exports = addPlayerText;
 //module.exports = this.dealCards();
+
+import * as Phaser from 'phaser';
+
+module.exports = {Phaser};
