@@ -5,7 +5,7 @@
 
 module.exports = {
   // All imported modules in your tests should be mocked automatically
-  automock: false,
+  automock: true,
 
   // Stop running tests after `n` failures
   // bail: 0,
@@ -71,14 +71,14 @@ module.exports = {
   // ],
 
   // An array of file extensions your modules use
-  // moduleFileExtensions: [
-  //   "js",
-  //   "jsx",
-  //   "ts",
-  //   "tsx",
-  //   "json",
-  //   "node"
-  // ],
+  moduleFileExtensions: [
+    "js",
+     "jsx",
+     "ts",
+     "tsx",
+     "json",
+     "node"
+   ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   // moduleNameMapper: {},
@@ -130,6 +130,7 @@ module.exports = {
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
+  //setupFilesAfterEnv: ['jest-extended'],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
@@ -153,9 +154,10 @@ module.exports = {
   // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  // testPathIgnorePatterns: [
-  //   "\\\\node_modules\\\\"
-  // ],
+    // "\\\\node_modules\\\\"
+  testPathIgnorePatterns: [
+      "node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)",
+  ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],

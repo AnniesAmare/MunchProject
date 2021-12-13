@@ -1,5 +1,5 @@
 //imports the phaser library from node_modules in project folder
-import * as phaser from '../phaser/src';
+//import * as phaser from '../phaser/src';
 
 //import * as game from '../../public/js/game.js';
 
@@ -35,7 +35,7 @@ May or may not be useful when mocking socket.io*/
 //import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 //const io = require('socket.io-client');
 //const io = require('/socket.io/socket.io.js');
-//const io = require('../node_modules/socket.io/client-dist/socket.io.esm.min.js')
+const io = require('../node_modules/socket.io/client-dist/socket.io.esm.min.js')
 //const io = require('https://cdn.socket.io/socket.io-3.0.1.min.js');
 
 
