@@ -1,5 +1,5 @@
 //imports the phaser library from node_modules in project folder
-//import * as phaser from '../phaser/src';
+import * as phaser from '../phaser/src';
 
 //import * as game from '../../public/js/game.js';
 
@@ -31,65 +31,12 @@ May or may not be useful when mocking socket.io*/
 //const http = require('http');
 //const ioBack = require('socket.io');
 
+
 //import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 //const io = require('socket.io-client');
 //const io = require('/socket.io/socket.io.js');
 //const io = require('../node_modules/socket.io/client-dist/socket.io.esm.min.js')
-const io = require('https://cdn.socket.io/socket.io-3.0.1.min.js');
-const http = require('http');
-const ioBack = require('socket.io');
-
-let socket;
-let httpServer;
-let httpServerAddr;
-let ioServer;
-
-/**
- * Setup WS & HTTP servers
- */
-beforeAll((done) => {
-    httpServer = http.createServer().listen();
-    httpServerAddr = httpServer.listen().address();
-    ioServer = ioBack(httpServer);
-    done();
-});
-
-/**
- *  Cleanup WS & HTTP servers
- */
-afterAll((done) => {
-    ioServer.close();
-    httpServer.close();
-    done();
-});
-
-/**
- * Run before each test
- */
-beforeEach((done) => {
-    // Setup
-    // Do not hardcode server port and address, square brackets are used for IPv6
-    socket = io.connect(`http://[${httpServerAddr.address}]:${httpServerAddr.port}`, {
-        'reconnection delay': 0,
-        'reopen delay': 0,
-        'force new connection': true,
-        transports: ['websocket'],
-    });
-    socket.on('connect', () => {
-        done();
-    });
-});
-
-/**
- * Run after each test
- */
-afterEach((done) => {
-    // Cleanup
-    if (socket.connected) {
-        socket.disconnect();
-    }
-    done();
-});
+//const io = require('https://cdn.socket.io/socket.io-3.0.1.min.js');
 
 
 

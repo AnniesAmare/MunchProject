@@ -117,4 +117,3 @@ function equipmentIsUsable(playerCharacter, equipmentType) {
 };
 
 
-module.exports = io;
