@@ -6,7 +6,6 @@
   "dependencies": {
     "express": "^4.17.1",
     "nodemon": "^2.0.15",
-    "react-test-renderer": "^17.0.2",
     "socket.io": "^4.4.0",
     "socket.io-client": "^4.4.0"
   },
