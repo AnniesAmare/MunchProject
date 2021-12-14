@@ -1,54 +1,109 @@
-//imports the phaser library from node_modules in project folder
-//import * as phaser from '../phaser/src';
+const io = require('socket.io-client');
+const http = require('http');
+const ioBackend = require('socket.io');
 
-//import * as game from '../../public/js/game.js';
+let socket;
+let httpServer;
+let httpServerAddr;
+let ioServer;
+let players = {};
 
-//const {Phaser} = require('phaser/src/phaser.js');
+/**
+ * Setup dummy-server
+ */
+beforeAll((done) => {
+    httpServer = http.createServer().listen();
+    httpServerAddr = httpServer.address();
+    ioServer = ioBackend(httpServer);
+    done();
+});
 
-//mocks phaser module
-//jest.mock('phaser');
+/**
+ *  Close dummy-server-connection
+ */
+afterAll((done) => {
+    ioServer.close();
+    done();
+});
 
-//ensures that phaser module has been loaded
-//expect(phaser.get).toHaveBeenCalled();
+/**
+ * Run before each test
+ */
+beforeEach((done) => {
+    // Socket setup
+    socket = io.connect(`http://[${httpServerAddr.address}]:${httpServerAddr.port}`, {
+        'reconnection delay': 0,
+        'reopen delay': 0,
+        'force new connection': true,
+        transports: ['websocket'],
+    });
+    socket.on('connect', () => {
+        players[socket.id] = {
+            playerId: socket.id,
+            playerName: 'Player ' + socket.id[3],
+            playerState: 0,
+            points: 0,
+            x: 200,
+            y: 50,
+            character: {
+                race: "Human",
+                combatClass: "Classless",
+                combatLevel: 0,
+                levelBonus: 0,
+                armor: false,
+                sword: false,
+            },
+        };
+        done();
+    });
+});
 
-/*requireActual(moduleName) Returns the actual module instead of a mock,
-bypassing all checks on whether the module should receive a mock implementation or not
-
-May or may not be useful when mocking socket.io*/
-//const {Response} = jest.requireActual(phaser);
-
-
-
-//import game functions
-//const {addPlayerText} = require('../public/js/game.js');
-//const {dealCards} = require('../public/js/game.js');
-
-
-//const io = require('../server.js');
-//const io = require('../public/index.html');
-
-//const io = require('socket.io-client');
-//const http = require('http');
-//const ioBack = require('socket.io');
+/**
+ * Run after each test
+ */
+afterEach((done) => {
+    // Cleanup
+    if (socket.connected) {
+        socket.disconnect();
+    }
+    done();
+});
 
 
-//import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
-//const io = require('socket.io-client');
-//const io = require('/socket.io/socket.io.js');
-//const io = require('../node_modules/socket.io/client-dist/socket.io.esm.min.js')
-//const io = require('https://cdn.socket.io/socket.io-3.0.1.min.js');
+describe('basic test to check if the jest-test environment works', () => {
+    const functions = {
+        add: (num1, num2) => num1 + num2
+    }
 
 
-//const {Phaser} = require("../public/js/game.js");
+//test for test function
+    test('Please effing work', () => {
+        expect(functions.add(2, 2)).toBe(4);
 
-//import { Socket } from "/socket.io/socket";
+    });
+});
 
-//const {io} = require('../public/js/game.js');
-
-//const {io} = require('../server.js');
+describe('basic example of our socket.io implementation', () => {
+    test('should communicate', (done) => {
+        // server-side
+        ioServer.emit('randomEventName', 'currentPlayers');
+        //client-side
+        socket.once('randomEventName', (message) => {
+            // Check that the message matches
+            expect(message).toBe('currentPlayers');
+            done();
+        });
+        ioServer.on('connection', (mySocket) => {
+            expect(mySocket).toBeDefined(); //toBeDefined checks that a values isn't undefined
+        });
+    });
+});
 
 
 import * as Phaser from 'phaser';
+//jest.mock('Phaser');
+//expect(Phaser.get).toHaveBeenCalled();
+
 
 const {config} = require('../public/js/game.js');
 
@@ -56,63 +111,56 @@ const game = new Phaser.Game(config);
 
 const scene = game.scene.getScene('create');
 
-//const {dealCards} = require('../public/js/game.js');
-//const {TreasureCard} = require('../public/js/components/TreasureCard.js');
+const {dealCards} = require('../public/js/game.js');
+//const TreasureCard = require('../public/js/components/TreasureCard.js');
+//import TreasureCard from '../public/js/components/TreasureCard.js';
+//TreasureCard(scene);
+
+//let dummyTreasureCard = new TreasureCard(scene, socket, 100 + 180, 440);
+
+
+
+
+
 
 /*
-const io = require('socket.io-client');
-const http = require('http');
-const ioBack = require('socket.io');
 
-let socket;
-let httpServer;
-let httpServerAddr;
-let ioServer;
-
- */
-
-const {io} = require('../server.js');
-
-/**
- * Setup io server
-
- */
-/*
-beforeAll((done) => {
-    httpServer = http.createServer().listen();
-    httpServerAddr = httpServer.listen().address();
-    ioServer = ioBack(httpServer);
-
-
-    done();
+test('Phaser test', () =>{
+    let playercard = new TreasureCard(scene, socket, 100 + 180, 440);
+    const spy = jest.spyOn(playercard, 'dealCards');
+    //const newCard = dealCards.playercard;
+    expect(spy).toHaveBeenCalled();
+    expect(playercard).toBe(true);
 });
 
  */
 
 
+/*
+
+test('Phaser test', () => {
+    const instance = Phaser.instance();
+    const spy = jest.spyOn(instance, 'dealCards');
+    //instance.forceUpdate();
+
+    const wrapper = Phaser.find('.TreasureCard').simulate('dealCards');
+    expect(spy).toHaveBeenCalled();
+})
+
+ */
 
 
-
-// test function to see if test environment works
-const functions = {
-    add: (num1, num2) => num1 + num2
-}
-
-
-//test for test function
-test('Please effing work', () => {
-    expect(functions.add(2,2)).toBe(4);
-
-});
 
 
 /*
+
 test('testing to se if the mock function for phaser works', ()=>{
-    Phaser.expect(dealCards.TreasureCard).toBeCalledTimes(1);
-
+    Phaser.expect(dealCards).toBeCalledTimes(1);
 });
 
  */
+
+
 
 
 

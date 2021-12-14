@@ -40,5 +40,5 @@ export default class TreasureCard extends Phaser.GameObjects.Container {
   }
 }
 
-//module.exports = TreasureCard;
+module.exports = TreasureCard;
   

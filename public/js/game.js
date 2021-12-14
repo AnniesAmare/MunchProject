@@ -102,7 +102,7 @@ function create() {
     }
   }
 
-  //module.exports = this.dealCards();
+  module.exports = this.dealCards();
 
 
   //Handles the deal cards event, by recieving the signal to deal cards and doing it.
