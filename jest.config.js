@@ -87,10 +87,13 @@ module.exports = {
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   // moduleNameMapper: {},
+    /*
     moduleNameMapper: {
         "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
         "\\.(scss|sass|css)$": "identity-obj-proxy"
     },
+
+     */
 
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -169,7 +172,6 @@ module.exports = {
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
     // "\\\\node_modules\\\\"
   testPathIgnorePatterns: [
-      "node_modules/?!(react-native|native-base)",
       "node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"
   ],
 
