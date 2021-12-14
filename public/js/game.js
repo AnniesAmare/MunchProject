@@ -102,6 +102,9 @@ function create() {
     }
   }
 
+  module.exports = this.dealCards();
+
+
   //Handles the deal cards event, by recieving the signal to deal cards and doing it.
   this.socket.on('dealCards', function () {
     console.log("Now dealing cards!");
@@ -155,6 +158,8 @@ NOTE: To test something, type this in your terminal:
 //function exports for UnitTests
 //module.exports = addPlayerText;
 module.exports = {config};
+
+
 
 //import * as Phaser from 'phaser';
 //import * as io from '../../node_modules/socket.io-client/dist/socket.io.esm.min.js';

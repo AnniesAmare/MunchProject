@@ -52,7 +52,45 @@ import * as Phaser from 'phaser';
 
 const {config} = require('../public/js/game.js');
 
-//const game = new Phaser.Game(config);
+const game = new Phaser.Game(config);
+
+const scene = game.scene.getScene('create');
+
+//const {dealCards} = require('../public/js/game.js');
+//const {TreasureCard} = require('../public/js/components/TreasureCard.js');
+
+/*
+const io = require('socket.io-client');
+const http = require('http');
+const ioBack = require('socket.io');
+
+let socket;
+let httpServer;
+let httpServerAddr;
+let ioServer;
+
+ */
+
+const {io} = require('../server.js');
+
+/**
+ * Setup io server
+
+ */
+/*
+beforeAll((done) => {
+    httpServer = http.createServer().listen();
+    httpServerAddr = httpServer.listen().address();
+    ioServer = ioBack(httpServer);
+
+
+    done();
+});
+
+ */
+
+
+
 
 
 // test function to see if test environment works
@@ -75,6 +113,7 @@ test('testing to se if the mock function for phaser works', ()=>{
 });
 
  */
+
 
 
 
