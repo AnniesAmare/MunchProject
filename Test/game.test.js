@@ -3,7 +3,7 @@
 
 //import * as game from '../../public/js/game.js';
 
-//const {Phaser} = require('phaser.js');
+//const {Phaser} = require('phaser/src/phaser.js');
 
 //mocks phaser module
 //jest.mock('phaser');
@@ -47,10 +47,19 @@ May or may not be useful when mocking socket.io*/
 
 //const {io} = require('../server.js');
 
+
+import * as Phaser from 'phaser';
+
+const {config} = require('../public/js/game.js');
+
+//const game = new Phaser.Game(config);
+
+
 // test function to see if test environment works
 const functions = {
     add: (num1, num2) => num1 + num2
 }
+
 
 //test for test function
 test('Please effing work', () => {
@@ -58,13 +67,15 @@ test('Please effing work', () => {
 
 });
 
+
 /*
 test('testing to se if the mock function for phaser works', ()=>{
-    phaser.expect(dealCards.TreasureCard).toBeCalledTimes(1);
+    Phaser.expect(dealCards.TreasureCard).toBeCalledTimes(1);
 
 });
 
  */
+
 
 
 //jest needs to be able to mock socket.io before this can run
