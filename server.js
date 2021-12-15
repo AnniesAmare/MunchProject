@@ -117,4 +117,6 @@ function equipmentIsUsable(playerCharacter, equipmentType) {
   else { return false }
 };
 
+module.exports = equipmentIsUsable;
+
 
