@@ -10,7 +10,7 @@
     "socket.io-client": "^4.4.0"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --forceExit",
     "start": "nodemon --exec babel-node server.js"
   },
   "keywords": [],
