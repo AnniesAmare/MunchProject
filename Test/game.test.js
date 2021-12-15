@@ -1,3 +1,9 @@
+//Phaser import
+import * as Phaser from 'phaser';
+
+//client-side imports
+const {config} = require('../public/js/game.js');
+
 //server-side imports
 import equipmentIsUsable from '../server.js';
 //socket imports
@@ -78,36 +84,6 @@ afterEach((done) => {
     done();
 });
 
-
-describe('basic test to check if the jest-test environment works', () => {
-    const aFunction = {
-        add: (num1, num2) => num1 + num2
-    }
-
-    test('Please effing work', () => {
-        expect(aFunction.add(2, 2)).toBe(4);
-
-    });
-});
-
-describe('basic examples of our socket.io implementation functionality', () => {
-    test('should communicate', (done) => {
-        // server-side
-        ioServer.emit('randomEventName', 'anyMessageWeWantToSend');
-        //client-side
-        socket.once('randomEventName', (message) => {
-            // Check that the message matches
-            expect(message).toBe('anyMessageWeWantToSend');
-            done();
-        });
-        ioServer.on('connection', (mySocket) => {
-            expect(mySocket).toBeDefined(); //toBeDefined checks that a values isn't undefined
-        });
-    });
-});
-
-
-
 //defines fetch-method for the test-environment
 function setupFetch(data) {
     return function fetch(_url) {
@@ -122,9 +98,127 @@ function setupFetch(data) {
     }
 }
 
-describe('Tests a pure method from our implementation', ()=>{
-    test('Tests if equipmentIsUsable() will return true given a correct parameter ex. Armor',
-        async () =>{
+
+describe('A test to check if the jest-test environment works', () => {
+    const aFunction = {
+        add: (num1, num2) => num1 + num2
+    }
+
+    test('Please effing work', () => {
+        expect(aFunction.add(2, 2)).toBe(4);
+
+    });
+});
+
+/*
+
+describe('Tests the phaser-setup in our implementation', ()=>{
+    test('Checks that we can create a Phaser-game with a scene', async ()=>{
+        const game = new Phaser.Game(config);
+        //const scene = game.scene.getScene('create');
+
+        let myData = {
+            methodResult: game
+        }
+
+        myData = jest.fn();
+
+
+
+        global.fetch = jest.fn().mockImplementation(setupFetch(myData))
+
+        const res = await fetch('anyUrl')
+        const json = await res.json()
+
+
+        expect(json).toEqual({
+            data: myData
+        })
+
+        //checks that the mock has been called
+        //expect(global.fetch).toHaveBeenCalledTimes(1);
+
+        //checks that the return-value isn't null or undefined
+        expect(json.data).toBeCalledWith(expect.anything())
+
+
+        global.fetch.mockClear()
+        delete global.fetch
+
+
+    })
+});
+
+ */
+
+describe('Basic examples of the functionality in our socket.io implementation', () => {
+    /*
+    test('Should communicate an emit', (done) => {
+        // server-side
+        ioServer.emit('randomEventName', 'anyMessageWeWantToSend');
+        //client-side
+        socket.once('randomEventName', (message) => {
+            // Check that the message matches
+            expect(message).toBe('anyMessageWeWantToSend');
+            done();
+        });
+        ioServer.on('connection', (mySocket) => {
+            expect(mySocket).toBeDefined(); //toBeDefined checks that a values isn't undefined
+        });
+    });
+
+     */
+
+    test('Tests a mock of how we change the state of a players object', (done)=> {
+        // jest.setup.js
+
+        /*
+        let myData = {
+            methodResult: changePlayerState()
+        }
+
+         */
+
+
+        //client-side should emit the parameters to be changed
+        socket.emit('treasure', 'levelUpCard');
+
+        //server-side
+            ioServer.once('treasure', (some) => {
+                expect(some).toEqual(9)
+
+
+                /*
+                if (value1 == "levelUpCard") {
+                    players[id].points = players[id].points + value2;
+                }
+
+                 */
+            })
+
+
+
+        //let val = changePlayerState()
+
+       // let spy = jest.fn().mockImplementation(changePlayerState);
+
+       // expect(val).toEqual(val)
+
+        done()
+
+        //let mock = jest.fn().mockImplementation(myData)
+
+        //expect(spy).toBe(3);
+
+        //expect(myData.methodResult).toBeCalledWith(expect.objectContaining({points: expect.any(Number)},))
+
+
+    })
+});
+
+
+describe('Tests the only pure method in our implementation', ()=>{
+    test('Tests if equipmentIsUsable() will return true given a correct parameter ex. Armor', async () =>{
 
         let equipmentType = 'Armor';
         let playerCharacter = players[id].character;
@@ -152,6 +246,57 @@ describe('Tests a pure method from our implementation', ()=>{
 
 
 
+/*
+import TreasureCard from '../public/js/components/TreasureCard.js';
+jest.mock('../public/js/components/TreasureCard.js');
+
+describe('Testing whether the class setup allows for different card types', ()=> {
+    test('tests if using the levelUpCard() adds new parameters to a TreasureCard', async() => {
+        let playercard = new TreasureCard(scene, socket, 100 + 180, 440);
+        playercard.levelUpCard = jest.fn();
+
+        let newCard = playercard.levelUpCard(3);
+
+        //const spy = jest.spyOn(newCard.methods, 'TreasureCard.levelUpCard');
+
+        //expect(spy).toHaveBeenCalledTimes(1);
+
+
+        const myData = {
+            methodResult: newCard
+        }
+
+        global.fetch = jest.fn().mockImplementation(setupFetch(myData))
+        const res = await fetch('anyUrl')
+        const json = await res.json()
+
+
+        expect(json).toEqual({
+            data: myData
+        })
+
+
+
+        socket.emit('treasure', 'levelUpCard', 3)
+
+
+
+
+
+        //expect(myData.methodResult).toBe(playercard.levelUpCard());
+
+        global.fetch.mockClear()
+        delete global.fetch
+
+    });
+});
+
+*/
+
+
+
+
+
 
 
 //jest.genMockFromModule('Phaser');
@@ -160,21 +305,12 @@ describe('Tests a pure method from our implementation', ()=>{
 //expect(Phaser.get).toHaveBeenCalled();
 
 
-import * as Phaser from 'phaser';
 
-const {config} = require('../public/js/game.js');
-
-const game = new Phaser.Game(config);
-
-const scene = game.scene.getScene('create');
 
 //const mock = jest.mock('../public/js/game.js');
 
 //const TreasureCard = require('../public/js/components/TreasureCard.js');
 
-import TreasureCard from '../public/js/components/TreasureCard.js';
-
-jest.mock('../public/js/components/TreasureCard.js');
 
 
 //const {levelUpCard} = require('../public/js/components/TreasureCard.js');
