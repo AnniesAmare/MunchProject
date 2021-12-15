@@ -153,7 +153,7 @@ describe('Tests a pure method from our implementation', ()=>{
 
 
 
-//jest.mock('Phaser');
+
 //jest.genMockFromModule('Phaser');
 
 
