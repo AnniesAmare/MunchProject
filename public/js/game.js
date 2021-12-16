@@ -20,13 +20,25 @@ var config = {
     update: update
   }
 };
+var textStyle = {
+  fontFamily: 'Quasimodo',
+  fontSize: '18px',
+  color: 'black',
+};
+var textStyle2 = {
+  fontFamily: 'LibreCaslon',
+  fontSize: '17px',
+  color: 'black',
+};
 var game = new Phaser.Game(config);
 
 
 function preload() {
+  this.load.image('background','./assets/background.jpg')
 }
 
 function create() {
+  this.add.image(0, 0, 'background').setOrigin(0,0);
   // TODO: #8 Implement a GameState
   let playerState = null;
 
@@ -114,17 +126,17 @@ function update() { }
 
 //Adds a playerInfoText graphic using a player-object recieved from the server
 function addPlayerText(self, playerInfo) {
-  const playerText = self.add.text(0, 0, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
+  const playerText = self.add.text(0, 0, playerInfo.playerName + " Points: " + playerInfo.points, textStyle).setOrigin(0.5, 0.5);
   const character = playerInfo.character.combatClass + " - " + playerInfo.character.race + "\nLevel(+ bonus): " + playerInfo.character.combatLevel;
-  const characterText = self.add.text(0, 25, character).setOrigin(0.5, 0.5);
+  const characterText = self.add.text(0, 25, character, textStyle2).setOrigin(0.5, 0.5);
   self.playerInfoText = self.add.container(playerInfo.x, playerInfo.y, [playerText, characterText]);
 }
 
 //Adds another players infoText grahic and adds this grapic to the group.
 function addOtherPlayersText(self, playerInfo) {
-  const playerText = self.add.text(0, 0, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
+  const playerText = self.add.text(0, 0, playerInfo.playerName + " Points:" + playerInfo.points, textStyle).setOrigin(0.5, 0.5);
   const character = playerInfo.character.combatClass + " - " + playerInfo.character.race + "\nLevel(+ bonus): " + playerInfo.character.combatLevel;
-  const characterText = self.add.text(0, 25, character).setOrigin(0.5, 0.5);
+  const characterText = self.add.text(0, 25, character, textStyle2).setOrigin(0.5, 0.5);
   const otherPlayerText = self.add.container(playerInfo.x, playerInfo.y, [playerText, characterText]);
   otherPlayerText.playerId = playerInfo.playerId;
   self.otherPlayersInfoText.add(otherPlayerText);
