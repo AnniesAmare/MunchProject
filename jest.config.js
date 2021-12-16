@@ -87,7 +87,7 @@ module.exports = {
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   // moduleNameMapper: {},
-    /*
+    /* Can be turned on if needed
     moduleNameMapper: {
         "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
         "\\.(scss|sass|css)$": "identity-obj-proxy"
@@ -107,7 +107,7 @@ module.exports = {
 
   // A preset that is used as a base for Jest's configuration
   // preset: undefined,
-    //preset: "react-native",
+
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -145,7 +145,6 @@ module.exports = {
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
-  //setupFilesAfterEnv: ['jest-extended'],
 
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.

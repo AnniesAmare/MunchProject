@@ -25,8 +25,6 @@ export default class TreasureCard extends Phaser.GameObjects.Container {
       });
     }
 
-    module.exports = this.levelUpCard();
-
     this.equipmentCard = function (levelBonus, equipmentType) {
       cardType = "equipmentCard"
       cardBack.setFillStyle(0xD8BC4B);
@@ -41,6 +39,3 @@ export default class TreasureCard extends Phaser.GameObjects.Container {
     this.scene.add.existing(this);
   }
 }
-
-module.exports = TreasureCard;
-  

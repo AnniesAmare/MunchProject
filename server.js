@@ -4,7 +4,6 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-module.exports = {io};
 var players = {}; //the object array used to
 
 //defines the locations of the relevant files
