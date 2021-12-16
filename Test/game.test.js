@@ -1,5 +1,5 @@
 //const {addPlayerText} = require('../public/js/game.js');
-// import * as phaser from '../node_modules/phaser/src'
+
 const functions = {
     add: (num1, num2) => num1 + num2
 }
