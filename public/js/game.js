@@ -108,12 +108,11 @@ function create() {
     self.dealCards();
     self.dealCardsText.destroy();
   });
-
 }
 
 function update() { }
 
-//Adds a playerInfoText graphic using a player-object received from the server
+//Adds a playerInfoText graphic using a player-object recieved from the server
 function addPlayerText(self, playerInfo) {
   const playerText = self.add.text(0, 0, playerInfo.playerName + " Points:" + playerInfo.points).setOrigin(0.5, 0.5);
   const character = playerInfo.character.combatClass + " - " + playerInfo.character.race + "\nLevel(+ bonus): " + playerInfo.character.combatLevel;
@@ -149,9 +148,5 @@ NOTE: To test something, type this in your terminal:
 "npm test"
  */
 
-//test function to see if phaser is mocked correctly
-
-
 //function exports for UnitTests
 //module.exports = addPlayerText;
-//module.exports = this.dealCards();

@@ -5,7 +5,7 @@
 
 module.exports = {
   // All imported modules in your tests should be mocked automatically
-  automock: true,
+  automock: false,
 
   // Stop running tests after `n` failures
   // bail: 0,
@@ -172,8 +172,7 @@ module.exports = {
   // timers: "real",
 
   // A map from regular expressions to paths to transformers
-   //transform: undefined,
-  transform: {"\\.[jt]sx?$": "babel-jest"},
+  // transform: undefined,
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
