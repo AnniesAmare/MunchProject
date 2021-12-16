@@ -1,7 +1,16 @@
 import TreasureCard from './components/TreasureCard.js';
 import GameState1 from './gamestates/GameState1.js';
 import GameState0 from './gamestates/GameState0.js';
-
+var textStyle = {
+  fontFamily: 'Quasimodo',
+  fontSize: '18px',
+  color: 'black',
+};
+var textStyle2 = {
+  fontFamily: 'LibreCaslon',
+  fontSize: '17px',
+  color: 'black',
+};
 var config = {
   type: Phaser.AUTO,
   parent: 'phaser-example',
@@ -19,16 +28,6 @@ var config = {
     create: create,
     update: update
   }
-};
-var textStyle = {
-  fontFamily: 'Quasimodo',
-  fontSize: '18px',
-  color: 'black',
-};
-var textStyle2 = {
-  fontFamily: 'LibreCaslon',
-  fontSize: '17px',
-  color: 'black',
 };
 var game = new Phaser.Game(config);
 
