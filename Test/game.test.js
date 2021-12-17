@@ -105,7 +105,7 @@ describe('A test to check if the jest-test environment works', () => {
         add: (num1, num2) => num1 + num2
     }
 
-    test('Please effing work', () => {
+    test('I work!', () => {
         expect(aFunction.add(2, 2)).toBe(4);
 
     });
@@ -138,42 +138,6 @@ describe('Basic example of the functionality in our socket.io implementation', (
             expect(mySocket).toBeDefined(); //toBeDefined checks that a values isn't undefined
         });
     });
-
-
-
-
-/*
-    test('Tests a mock of how we change the state of a players object', (done)=> {
-        //client-side should emit the parameters to be changed
-        ioServer.emit('treasure', 'here');
-
-        socket.once('treasure', (lvls) => {
-            expect(lvls).toEqual('he')
-                //players[id].points = players[id].points + lvls;
-
-        })
-
-        ioServer.on('connection', (mySocket) => {
-            expect(mySocket).toBeDefined(); //toBeDefined checks that a values isn't undefined
-        });
-
-        //server-side
-        function changePlayerState() {
-
-
-            return players[id]
-        }
-
-        let testMock = changePlayerState()
-       // let spy = jest.fn().mockImplementation(changePlayerState);
-
-        //expect(spy).toBe(testMock)
-
-        done()
-    })
-
- */
-
 
 })
 
