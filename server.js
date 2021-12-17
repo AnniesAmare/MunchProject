@@ -1,18 +1,17 @@
+//Initial server-setup: Defines express and socket.io as requirements to run the server and imports them.
 const express = require('express');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-var players = {}; //the object array used to 
+var players = {}; //the object array used to hold all the players' information.
 
-//defines the locations of the relevant files
+//defines the routing for the server
 app.use(express.static(__dirname + '/public'));
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
-
-
 
 //selects the port for the localhost-server.
 server.listen(8081, function () {
@@ -31,6 +30,7 @@ io.on('connection', function (socket) {
     points: 0,
     x: 200,
     y: 50,
+    //Character-parameters contained within the player object
     character: {
       race: "Human",
       combatClass: "Classless",
@@ -41,10 +41,9 @@ io.on('connection', function (socket) {
     },
   };
   socket.emit('currentPlayers', players);   // send all the player-objects to the new player
-  socket.broadcast.emit('update', players);  // updates all players.
 
-  //happens when the socket disconnects again
   socket.on('disconnect', function () {
+    /* Once a socket disconnects, the player-object with the related socket.id is deleted and all players are updated */
     console.log('user with id: ' + socket.id + ', disconnected');
     delete players[socket.id]; //deletes the player-object for the disconnected player
     socket.broadcast.emit('update', players); //send the disconnected player's id to all other players
@@ -56,16 +55,24 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('dealCards'); //sends a message to all connected players to execute the dealCards-function.
   });
 
-  //happens when a state-update is emitted from the client.
+  //triggers when a state-update is emitted from the client.
+  //Updates the gamestate for the relevant player(s) and emits an update
   socket.on('changeState', function(newState){
-    players[socket.id].playerState = newState;
+    if (newState == 1){
+      Object.keys(players).forEach(function (id) {
+        players[id].playerState = 1;
+      });
+    } else {
+      players[socket.id].playerState = newState;
+    }
 
     // tells all connected sockets to update to the changed player-objects.
     socket.emit('update', players); //sends this message back to the sender
     socket.broadcast.emit('update', players); //sends this message to all others.
   })
 
-  //happens when a user "uses" a card = when they drag/click a card-object.
+  //used so that players can emit a global-update, that updates all connected sockets
+  //triggers: A new player connects.
   socket.on('globalUpdate', function () {
         // tells all connected sockets to update
         socket.emit('update', players); //sends this message back to the sender
@@ -80,7 +87,7 @@ io.on('connection', function (socket) {
 
     if (cardType == "levelUpCard") {
       player.points = player.points + points; //updates the playerdata to add the point.
-      playerCharacter.combatLevel = playerCharacter.combatLevel + player.points; //updates the characterdata to add the levels
+      playerCharacter.combatLevel = playerCharacter.combatLevel + points; //updates the characterdata to add the levels
     } 
     
     else if (cardType == "equipmentCard") {
