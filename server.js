@@ -150,7 +150,7 @@ io.on('connection', function (socket) {
         socket.emit('alert', 'Too bad! You died');
       }
     }
-    player.playerState = 2; //dead-end
+    player.playerState = 4; //dead-end
     
     // tells all connected sockets to update to the changed player-objects.
     socket.emit('update', players); //sends this message back to the sender

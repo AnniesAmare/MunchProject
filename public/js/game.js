@@ -4,6 +4,7 @@ import GameState1 from './gamestates/GameState1.js';
 import GameState0 from './gamestates/GameState0.js';
 import GameState2 from './gamestates/GameState2.js';
 import GameState3 from './gamestates/GameState3.js';
+import GameState4 from './gamestates/GameState4.js';
 
 var textStyle = {
   fontFamily: 'Quasimodo',
@@ -125,6 +126,10 @@ function create() {
       let gameState = new GameState3(self, self.socket);
       self.gameStateGroup.add(gameState);
       destroyChildren(self.playerHand);
+    }
+    if (playerState == 4){
+      let gameState = new GameState4(self, self.socket);
+      self.gameStateGroup.add(gameState);
     }
   });
 
