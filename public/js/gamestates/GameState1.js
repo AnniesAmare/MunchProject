@@ -1,9 +1,4 @@
-var textStyle = {
-  fontFamily: 'Quasimodo',
-  fontSize: '50px',
-  color: 'black',
-};
-
+//Carddealing gamestate
 export default class GameState1 extends Phaser.GameObjects.Container {
   constructor(scene, socket) {
     super(scene);
@@ -36,3 +31,15 @@ export default class GameState1 extends Phaser.GameObjects.Container {
     this.scene.add.existing(this);
   }
 }
+
+var textStyle = {
+  fontFamily: 'Quasimodo',
+  fontSize: '50px',
+  color: 'black',
+};
+
+var textStyle2 = {
+  fontFamily: 'LibreCaslon',
+  fontSize: '17px',
+  color: 'black',
+};

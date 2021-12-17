@@ -1,9 +1,3 @@
-var textStyle2 = {
-  fontFamily: 'LibreCaslon',
-  fontSize: '17px',
-  color: 'black',
-};
-
 export default class DoorCard extends Phaser.GameObjects.Container {
   constructor(scene, socket, x, y) {
     super(scene);
@@ -21,13 +15,13 @@ export default class DoorCard extends Phaser.GameObjects.Container {
     this.add(cardText);
 
     this.monsterCard = function (numberOfLevels) {
-      cardType = "levelUpCard";
+      cardType = "monster";
       cardBack.setFillStyle(0xfff4e6);
       cardBack.setStrokeStyle(4, 0x764d4a)
-      cardText.setText("LevelUp");
+      cardText.setText("A monster\nLevel: "+numberOfLevels);
+
       cardBack.on('pointerdown', function () {
-        console.log("Adding " + numberOfLevels + " points to player");
-        socket.emit('treasure', cardType, numberOfLevels);
+        socket.emit('door', cardType, numberOfLevels);
         self.destroy();
       });
     }
@@ -35,3 +29,9 @@ export default class DoorCard extends Phaser.GameObjects.Container {
     this.scene.add.existing(this);
   }
 }
+
+var textStyle2 = {
+  fontFamily: 'LibreCaslon',
+  fontSize: '17px',
+  color: 'black',
+};

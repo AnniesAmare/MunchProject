@@ -2,6 +2,8 @@ import TreasureCard from './components/TreasureCard.js';
 import DoorCard from './components/DoorCard.js';
 import GameState1 from './gamestates/GameState1.js';
 import GameState0 from './gamestates/GameState0.js';
+import GameState2 from './gamestates/GameState2.js';
+import GameState3 from './gamestates/GameState3.js';
 
 var textStyle = {
   fontFamily: 'Quasimodo',
@@ -37,6 +39,7 @@ var game = new Phaser.Game(config);
 function preload() {
   //Loads image assets
   this.load.image('background','./assets/background.jpg')
+  this.load.image('monster', './assets/professorMonster.png');
 }
 
 function create() {
@@ -114,26 +117,43 @@ function create() {
       let gameState = new GameState1(self, self.socket);
       self.gameStateGroup.add(gameState);
     }
+    if (playerState == 2){
+      let gameState = new GameState2(self, self.socket);
+      self.gameStateGroup.add(gameState);
+    }
+    if (playerState == 3){
+      let gameState = new GameState3(self, self.socket);
+      self.gameStateGroup.add(gameState);
+      destroyChildren(self.playerHand);
+    }
   });
 
   //Defines a function to create and render the cards objects using the Card-class
   this.dealCards = function () {
     for (let i = 0; i < 5; i++) {
-      let treasurecard = new TreasureCard(this, self.socket, 100 + (i * 180), 440);
+      let doorcard = new DoorCard(this, self.socket, 100 + (i * 180), 300);
+      doorcard.monsterCard(5);
+      let treasurecard = new TreasureCard(this, self.socket, 100 + (i * 180), 480);
       if (i > 2) {
         treasurecard.levelUpCard(1);
       } else {
         treasurecard.equipmentCard(5, "Armor");
       }
+      self.playerHand.add(treasurecard);
+      self.playerHand.add(doorcard);
     }
-    self.socket.emit('changeState', 0);
+    self.socket.emit('changeState', 2);
   }
 
   //Handles the deal cards event, by recieving the signal to deal cards and doing it.
   this.socket.on('dealCards', function () {
     console.log("Now dealing cards!");
     self.dealCards();
-    self.dealCardsText.destroy();
+  });
+
+  //Handles any sort of alert emitted from the server to the player.
+  this.socket.on('alert', function(content){
+    alert(content);
   });
 }
 

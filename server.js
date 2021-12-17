@@ -98,11 +98,60 @@ io.on('connection', function (socket) {
       } else {
         // TODO: #6 Add clientside handling for player failing to equip an item
         console.log("Player is already wearing a type: " + equipmentType);
+        socket.emit('alert', "You're already wearing a type: " + equipmentType + "\nYour card is discarded");
       }
     } else {
       console.log("Unknown card");
     }
 
+    // tells all connected sockets to update to the changed player-objects.
+    socket.emit('update', players); //sends this message back to the sender
+    socket.broadcast.emit('update', players); //sends this message to all others.
+  });
+
+  //happens when a user "uses" a doorcard = when they click a doorCard-object.
+  socket.on('door', function (cardType, levels) {
+    console.log("Using a doorCard of cardType: " + cardType);
+    const player = players[socket.id];
+    const playerCharacter = player.character;
+
+    if (cardType == 'monster'){
+      player.playerState = 3;
+      // tells all connected sockets to update to the changed player-objects.
+      socket.emit('update', players); //sends this message back to the sender
+      socket.emit('addMonster', levels); //Sends the monster-level info to the player.
+    }
+  });
+
+  socket.on('combat', function(action, levels){
+    const player = players[socket.id];
+    const playerCharacter = player.character;
+    if (action == 'run'){
+      let diceroll = Math.floor(Math.random()*10); //returns a random number from 0 to 9
+      console.log(diceroll);
+      if (diceroll >= 5){
+        socket.emit('alert', 'You rolled: '+diceroll+'\n You escaped from the monster');
+      } else {
+        //All levels and bonusses are removed
+        player.points = 0;
+        playerCharacter.combatLevel = 0;
+        socket.emit('alert', 'You rolled: '+diceroll+'\n You failed to run away and died');
+      }
+    }
+    if (action == 'fight'){
+      if (playerCharacter.combatLevel > levels) {
+        //A level is added to the player as reward
+        player.points = player.points + 1; //updates the playerdata to add the point.
+        playerCharacter.combatLevel = playerCharacter.combatLevel + 1; //updates the characterdata to add the levels
+      } else {
+        //All levels and bonusses are removed
+        player.points = 0;
+        playerCharacter.combatLevel = 0;
+        socket.emit('alert', 'Too bad! You died');
+      }
+    }
+    player.playerState = 2; //dead-end
+    
     // tells all connected sockets to update to the changed player-objects.
     socket.emit('update', players); //sends this message back to the sender
     socket.broadcast.emit('update', players); //sends this message to all others.
