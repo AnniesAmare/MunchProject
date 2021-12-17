@@ -141,6 +141,8 @@ function create() {
       let treasurecard = new TreasureCard(this, self.socket, 100 + (i * 180), 480);
       if (i > 2) {
         treasurecard.levelUpCard(1);
+      } else if (i == 2){
+        treasurecard.equipmentCard(7, "Sword");
       } else {
         treasurecard.equipmentCard(5, "Armor");
       }
