@@ -143,6 +143,7 @@ io.on('connection', function (socket) {
         //A level is added to the player as reward
         player.points = player.points + 1; //updates the playerdata to add the point.
         playerCharacter.combatLevel = playerCharacter.combatLevel + 1; //updates the characterdata to add the levels
+        socket.emit('alert', 'Congrats! You defated the monster!');
       } else {
         //All levels and bonusses are removed
         player.points = 0;
