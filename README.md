@@ -24,6 +24,10 @@ Express/node server.js (express version 4.17.1)
 
 Socket.io (socket.io version 4.3.1)
 
+Babel
+
+Nodemon
+
 #Features
 Treasure Cards
 
