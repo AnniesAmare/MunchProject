@@ -119,8 +119,10 @@ describe('Phaser in our jest implementation', ()=>{
         //see in console.log that this is a canvas-object
         const game = new Phaser.Game(config);
 
+
     })
 });
+
 
 
 

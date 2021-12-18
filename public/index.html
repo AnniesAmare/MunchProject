@@ -4,16 +4,27 @@
 <head>
   <title>More Tests</title>
   <style>
+    @font-face {
+        font-family: Quasimodo;
+        src: url('/assets/Quasimodo.ttf');
+        font-weight: 400;
+        font-weight: normal;
+    }
+    @font-face {
+        font-family: LibreCaslon;
+        src: url('/assets/LibreCaslon.ttf');
+        font-weight: 400;
+        font-weight: normal;
+    }
     body {
       margin: 30;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: rgb(48, 48, 48);
     }
   </style>
 </head>
 
 <body>
-  <div>
+  <div style="font-family:Quasimodo; font-family: LibreCaslon;">
     <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script type="module" src="js/game.js"></script>
