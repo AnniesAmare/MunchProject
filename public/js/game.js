@@ -152,6 +152,7 @@ function create() {
     self.socket.emit('changeState', 2);
   }
 
+
   //Handles the deal cards event, by recieving the signal to deal cards and doing it.
   this.socket.on('dealCards', function () {
     console.log("Now dealing cards!");
@@ -211,5 +212,9 @@ NOTE: To test something, type this in your terminal:
 "npm test"
  */
 
+
+
+
 //function exports for UnitTests
-//module.exports = addPlayerText;
+module.exports = {config};
+

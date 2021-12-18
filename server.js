@@ -98,6 +98,7 @@ io.on('connection', function (socket) {
       } else {
         // TODO: #6 Add clientside handling for player failing to equip an item
         console.log("Player is already wearing a type: " + equipmentType);
+
         socket.emit('alert', "You're already wearing a type: " + equipmentType + "\nYour card is discarded");
       }
     } else {
@@ -171,3 +172,7 @@ function equipmentIsUsable(playerCharacter, equipmentType) {
   }
   else { return false }
 };
+
+module.exports = equipmentIsUsable;
+
+

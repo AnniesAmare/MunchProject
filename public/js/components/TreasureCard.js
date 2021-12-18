@@ -47,4 +47,3 @@ export default class TreasureCard extends Phaser.GameObjects.Container {
     this.scene.add.existing(this);
   }
 }
-  
